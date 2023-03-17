@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./css/mean_median_mode.css">
+        <script src="./js/mean_median_mode.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Mean Median Mode</title>
+        <!-- <script>
+            function calculateMMM(mmm_val) {
+                $.ajax({
+                    method: "post",
+                    url: "./php/mean_median_mode_calculate.php",
+                    data: {val_arr : mmm_val}
+                }).done(function (response) {
+                    console.log(response);
+                    $("#subTable").html(response);
+                })
+            }
+        </script> -->
+    </head>
+    <body>
+        <table border="1" style="width: 100%; text-align: center;" id="mainTableMMM">
+            <tr>
+                <th>Mean - Median - Mode Calculator</th>
+            </tr>
+            
+            <tr>
+                <td>
+                    <!-- <form action="./PHP/mean_median_mode_calculate.php" method="post"> -->
+                    <!-- <form> -->
+                        <table border="1" style="margin: 0 auto; text-align: center; display: table; width: 50%;" id="formTable">
+                            <tr>
+                                <td>
+                                    <label for="mmm_val">Enter Your Values to Calculate<br> Mean, Median & Mode: </label>
+                                </td>
+                                <td>
+                                    <textarea cols="30" rows="5" id="mmm_val" name="mmm_val" placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" required></textarea>
+                                </td>
+                                <!-- <td><input type="number" id="mmm_val" name="mmm_val"/></td> -->
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <input type="submit" onclick="calculateMMM(document.getElementById('mmm_val').value)" value="Calculate" id="mmm_cal">
+                                </td>
+                            </tr>
+                            <tr>
+                                <table id="subTable" border="1" style="margin: 0 auto; text-align: center; display: table; width: 100%;"></table>
+                            </tr>
+                        </table>
+                    <!-- </form> -->
+                </td>
+
+                <td>
+
+                </td>
+            </tr>
+        </table>
+    </body>
+    <script>
+
+        const textarea = document.getElementById("mmm_val");
+        const btn = document.getElementById("mmm_cal");
+
+        if(textarea.value == "") {
+            btn.disabled = true;
+        }
+
+        function checkInput() {
+            // if((obj.value).match(/^[-+]?\d*\.?\d+(,\s*[-+]?\d*\.?\d+)*$/)) {
+            if((textarea.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+                btn.disabled = false;
+            } else if(textarea.value == "") {
+                btn.disabled = true;
+                // obj.setCustomValidity("empty input");
+            } else {
+                // obj.setCustomValidity("");
+                btn.disabled = true;
+                textarea.setCustomValidity("allows only numbers");
+            }
+        }
+
+        textarea.addEventListener("input",checkInput);
+    </script>
+</html>

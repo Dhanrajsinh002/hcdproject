@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/population_mean_sd.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/population_mean_sd.js"></script>
+    <title>Population Mean - Population Standard Deviation</title>
+</head>
+<body>
+    <table border="1" style="width: 100%; text-align: center;">
+        <tr>
+            <th>Population Mean - Population Standard Deviation</th>
+        </tr>
+
+        <tr>
+            <td>
+                <table border="1" style="margin: 0 auto; text-align: center; display: table; width: 50%;">
+                    <tr>
+                        <td>
+                            <label for="msd_lbl">Enter Your Population Values to Calculate<br>Population Mean & Standard Deviation</label>
+                        </td>
+
+                        <td>
+                            <textarea name="msd_val" id="msd_val" placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" cols="30" rows="5" required></textarea>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <button id="msd_cal" onclick="calculateMSD(document.getElementById('msd_val').value)">Calculate</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <table id="msd_result" border="1" style="margin: 0 auto; text-align: center; display: table; width: 100%;"></table>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
+</body>
+
+<script>
+    const msd_text = document.getElementById("msd_val");
+    const msd_btn = document.getElementById("msd_cal");
+
+    if(msd_text.value == "") {
+        msd_btn.disabled = true;
+    }
+
+    function checkMSDInput() {
+        if((msd_text.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+            msd_btn.disabled = false;
+        } else if(msd_text.value == "") {
+            msd_btn.disabled = true;
+        } else {
+            msd_btn.disabled = true;
+        }
+    }
+
+    msd_text.addEventListener("input",checkMSDInput)
+</script>
+
+</html>

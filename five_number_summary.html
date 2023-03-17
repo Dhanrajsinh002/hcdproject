@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/five_number_summary.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="./js/five_number_summary.js"></script>
+    <title>Five Number Summary</title>
+</head>
+<body>
+    <table border="1" style="width: 100%; text-align: center;">
+        <tr>
+            <th> Five Number Summary </th>
+        </tr>
+
+        <tr>
+            <td>
+
+                <!-- <form> -->
+                        <table border="1" style="margin: 0 auto; text-align: center; display: table; width: 50%;">
+                            <tr>
+                                <td>
+                                    <label for="fns_lbl">Enter Your values to calculate<br>Five Number Summary</label>
+                                </td>
+
+                                <td>
+                                    <textarea name="fns_val" id="fns_val" cols="30" rows="5" placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" required></textarea>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <button id="fns_cal" onclick="calculateFNS(document.getElementById('fns_val').value)">Calculate</button>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <table id="fns_res" style="width: 100%; text-align: center;" border="1"></table>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div id="boxPlot"></div>
+                                </td>
+                            </tr>
+                        </table>
+                <!-- </form> -->
+
+            </td>
+        </tr>
+
+    </table>
+</body>
+
+<script>
+    const fns_text = document.getElementById("fns_val");
+    const fns_btn = document.getElementById("fns_cal");
+
+    if(fns_text.value == "") {
+        fns_btn.disabled = true;
+    }
+
+    function checkFNSInput() {
+        if((fns_text.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+            fns_btn.disabled = false;
+        } else if(fns_text.value == "") {
+            fns_btn.disabled = true;
+        } else {
+            fns_btn.disabled = true;
+        }
+    }
+
+    fns_text.addEventListener("input",checkFNSInput);
+</script>
+
+</html>

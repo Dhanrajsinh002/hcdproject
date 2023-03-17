@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/sample_mean_var_sd.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/sample_mean_var_sd.js"></script>
+    <title>Sample Mean - Sample Variance - Sample Standard Deviation</title>
+</head>
+<body>
+    <table border="1" style="width: 100%; text-align: center;">
+        <tr>
+            <th>Sample Mean - Sample Variance - Sample Standard Deviation</th>
+        </tr>
+
+        <tr>
+            <td>
+                <!-- <form> -->
+                    <table border="1" style="margin: 0 auto; text-align: center; display: table; width: 50%;" id="formTable">
+                        <tr>
+                            <td>
+                                <label for="mvsd_val">Enter Your Sample Values to Calculate<br> Sample Mean, Variance & Standard Deviation: </label>
+                            </td>
+                            <td>
+                                <textarea cols="30" rows="5" id="mvsd_val" name="mvsd_val" placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" required></textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <!-- <input type="submit" id="mvsd_cal" value="Calculate"> -->
+                                <button id="mvsd_cal" onclick="calculateMVSD(document.getElementById('mvsd_val').value)">Calculate</button>
+                                <!-- <button id="mvsd_cal">Calculate</button> -->
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <table id="subTable" border="1" style="margin: 0 auto; text-align: center; display: table; width: 100%;"></table>
+                        </tr>
+                    </table>
+                <!-- </form> -->
+            </td>
+        </tr>
+
+    </table>
+</body>
+<script>
+
+    const smvd_text = document.getElementById("mvsd_val");
+    const smvd_btn = document.getElementById("mvsd_cal");
+
+    if(smvd_text.value == "") {
+        smvd_btn.disabled = true;
+    }
+
+    function checkMVSDInput() {
+        if((smvd_text.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+            smvd_btn.disabled = false;
+        } else if(smvd_text.value == "") {
+            smvd_btn.disabled = true;
+            // obj.setCustomValidity("empty input");
+        } else {
+            // obj.setCustomValidity("");
+            smvd_btn.disabled = true;
+            // smvd_text.setCustomValidity("allows only numbers");
+        }
+    }
+
+    smvd_text.addEventListener("input",checkMVSDInput);
+    // smvd_btn.addEventListener("click",calculateMVSD)
+</script>
+
+
+</html>

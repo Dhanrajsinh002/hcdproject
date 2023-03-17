@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/standardized_variable.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/standardized_variable.js"></script>
+    <title>Standardized Variable</title>
+</head>
+<body>
+    <table border="1" style="width: 100%; text-align: center;">
+        <tr>
+            <th>Standardized Variable</th>
+        </tr>
+
+        <tr>
+            <td>
+                <table border="1" style="margin: 0 auto; text-align: center; display: table; width: 50%;">
+                    <tr>
+                        <td>
+                            <label for="z_lbl">Enter Your x Values to Calculate<br>its z values</label>
+                        </td>
+
+                        <td>
+                            <textarea name="z_val" id="z_val" placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" cols="30" rows="5" required></textarea>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <button id="z_cal" onclick="calculateZ(document.getElementById('z_val').value)">Calculate</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <table id="z_result" border="1" style="margin: 0 auto; text-align: center; display: table; width: 100%;"></table>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+<script>
+    const z_txt = document.getElementById("z_val");
+    const z_btn = document.getElementById("z_cal");
+
+    if(z_txt.value == "") {
+        z_btn.disabled = true;
+    }
+
+    function checkZInput() {
+        if((z_txt.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+            z_btn.disabled = false;
+        } else if(z_txt.value == "") {
+            z_btn.disabled = true;
+        } else {
+            z_btn.disabled = true;
+        }
+    }
+
+    z_txt.addEventListener("input",checkZInput)
+</script>
+
+</html>

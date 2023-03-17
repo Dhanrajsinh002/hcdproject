@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mean & Standard Deviation of D.R.M</title>
+    <link rel="stylesheet" href="./css/mean_discrete_random_variable.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/mean_discrete_random_variable.js"></script>
+</head>
+<body>
+    <table border="1" style="width: 100%; text-align: center;">
+        <tr>
+            <th colspan="2">Mean & Standard Deviation of Discrete Random Variable</th>
+        </tr>
+
+        <tr style="width: 50%;">
+            <td style="width: 50%;">                    
+                <input type="radio" name="rbtn" id="r1" value="r1"/>
+                <label for="method1">Method 1</label>
+            </td>
+
+            <td style="width: 50%;">
+                <input type="radio" name="rbtn" id="r2" value="r2"/>
+                <label for="method2">Method 2</label>
+            </td>
+        </tr>
+
+        <tr>
+
+            <td style="width: 50%;">
+                <div>
+                    <fieldset id="f1">
+                        <table style="text-align: center; width: 100%;">
+                            <tr>
+                                <td>
+                                    <textarea cols="30" rows="5" id="msdrv_val" name="msdrv_val" placeholder="Enter Comma(,) separated values&#10;i.e. 19,20,20,19,21,27,20,21" required></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!-- <input type="submit" id="g_btn1" value="Calculate" onclick="calculateMethod1(document.getElementById('g_val').value)"> -->
+                                    <button id="msdrv_btn1" onclick="calculateMSDRVM1(document.getElementById('msdrv_val').value)">Calculate</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>
+                                        Note: By selecting Method 1 you can only add repeatative values.
+                                    </p>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </fieldset>                    
+                </div>
+            </td>
+            
+            <td style="width: 50%;">
+                <div>
+                    <fieldset id="f2">
+                        <table style="text-align: center; width: 100%">
+                            <tr>
+                                <td>
+                                    <textarea cols="30" rows="5" id="msdrv_lbl" name="msdrv_lbl" placeholder="Enter your labels here separated by Comma(,)&#10;i.e. 0,1,2,3,4" required></textarea>
+                                </td>
+                        
+                                <td>
+                                    <textarea cols="30" rows="5" id="msdrv_lbl_val" name="msdrv_lbl_val" placeholder="Enter your values here separated by Comma(,)&#10;i.e. 0.5,0.1,0.20,0.48,0.55" required></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button id="msdrv_btn2" onclick="calculateMSDRVM2(document.getElementById('msdrv_lbl').value, document.getElementById('msdrv_lbl_val').value)">Calculate</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p>
+                                        Note: By selecting Method 2 you can enter labels <br> and its respected relative frequencies (no of occurance).
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </div>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <table id="msdrv_res" border="1" style="width: 100%;"></table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div id="pieChart"></div>
+                <!-- <div id="pieChart" style="width: 50%; position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
+                <!-- <canvas id="pieChart" width="637" height="300" style="position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: default;"></canvas> -->
+            </td>
+
+            <td>
+                <div id="barChart"></div>
+                <!-- <div id="barChart" style="width: 50%;  position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
+            </td>
+        </tr>
+
+    </table>
+</body>
+
+<script>
+    const m1_msdrv_txt0 = document.getElementById("msdrv_val");
+    const m2_msdrv_txt0 = document.getElementById("msdrv_lbl");
+    const m2_msdrv_txt1 = document.getElementById("msdrv_lbl_val");
+    const msdrv_btn1 = document.getElementById("msdrv_btn1");
+    const msdrv_btn2 = document.getElementById("msdrv_btn2");
+
+    $(document).ready(function() {
+        $("#f2").prop("disabled",true);
+        $("#r1").prop("checked",true);
+        $("input:radio").click(function() {
+            if($(this).val() == "r1") {
+                $("#f1").prop("disabled",false);
+                $("#f2").prop("disabled",true);
+            } else {
+                $("#f1").prop("disabled",true);
+                $("#f2").prop("disabled",false);
+            }
+      });
+    });
+
+    if(m1_msdrv_txt0.value == "") {
+        msdrv_btn1.disabled = true;
+    }
+
+    function checkM1Validity() {
+        if( (m1_msdrv_txt0.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/) ) {
+            msdrv_btn1.disabled = false;
+        } else if(m1_msdrv_txt0.value == "") {
+            msdrv_btn1.disabled = true;
+        } else {
+            msdrv_btn1.disabled = true;
+        }
+    }
+
+    function checkM2Validity() {
+        if( (m2_msdrv_txt0.value != "" && m2_msdrv_txt1.value != "") && 
+            ((m2_msdrv_txt0.value).match() 
+            && (m2_msdrv_txt1.value).match()) ) {}
+    }
+
+    // function calculateMSDRV(val) {
+    //     $.ajax({
+    //         method: 'post',
+    //         url: './php/mean_discrete_random_variable.php',
+    //         data: {msdrv_val : val}
+    //     }).done(function (response) {
+    //         alert(response);
+    //     })
+    // }
+
+    m1_msdrv_txt0.addEventListener("input",checkM1Validity)
+    m2_msdrv_txt0.addEventListener("input",checkM2Validity)
+    m2_msdrv_txt1.addEventListener("input",checkM2Validity)
+</script>
+
+</html>

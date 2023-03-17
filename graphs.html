@@ -1,0 +1,225 @@
+<html>
+    <head>
+        <title>Graphs</title>
+        <link rel="stylesheet" href="./css/graphs.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script> -->
+        <script src="./js/graphs.js"></script>
+    </head>
+    <body>
+        <table border="1" style="text-align: center; width: 100%;" id="mainTableGraphs">
+            <tr>
+                <td colspan="2" align="center">Graph Calculator</td>
+            </tr>
+            
+            <tr style="width: 50%;">
+                <td style="width: 50%;">                    
+                    <input type="radio" name="rbtn" id="r1" value="r1"/>
+                    <label for="method1">Method 1</label>
+                </td>
+
+                <td style="width: 50%;">
+                    <input type="radio" name="rbtn" id="r2" value="r2"/>
+                    <label for="method2">Method 2</label>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td style="width: 50%;">
+                    <div>
+
+                        <!-- <form> -->
+                            <fieldset id="f1">
+                                <table style="text-align: center; width: 100%; border: 1px solid red;">
+                                    <tr>
+                                        <td>
+                                            <textarea cols="30" rows="5" id="g_val" name="g_val" placeholder="Enter Comma(,) separated values&#10;i.e. A,B,C,D,F,E,A,C,B" required></textarea>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <!-- <input type="submit" id="g_btn1" value="Calculate" onclick="calculateMethod1(document.getElementById('g_val').value)"> -->
+                                            <button id="g_btn1" onclick="calculateMethod1(document.getElementById('g_val').value)">Calculate</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <p>
+                                                Note: By selecting Method 1 you can only add repeatative values.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    
+                                </table>
+                            </fieldset>
+                        <!-- </form> -->
+                        
+                    </div>
+                </td>
+                
+                <td style="width: 50%;">
+                    <div>
+
+                        <!-- <form> -->
+                            <fieldset id="f2">
+                                <table style="text-align: center; width: 100%">
+                                    <tr>
+                                        <td>
+                                            <textarea cols="30" rows="5" id="g_lable" name="g_lable" placeholder="Enter your labels here separated by Comma(,)&#10;i.e. A,B,C,D,F,E" required></textarea>
+                                        </td>
+                                
+                                        <td>
+                                            <textarea cols="30" rows="5" id="g_lbl_val" name="g_lbl_val" placeholder="Enter your values here separated by Comma(,)&#10;i.e. 25,5,3,10,11,1" required></textarea>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <button id="g_btn2" onclick="calculateMethod2(document.getElementById('g_lable').value, document.getElementById('g_lbl_val').value)">Calculate</button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <p>
+                                                Note: By selecting Method 2 you can enter labels <br> and its respected relative frequencies (no of occurance).
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </fieldset>
+                        <!-- </form> -->
+                        
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <table id="result" border="1" style="width: 100%;"></table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div id="pieChart"></div>
+                    <!-- <div id="pieChart" style="width: 50%; position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
+                    <!-- <canvas id="pieChart" width="637" height="300" style="position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: default;"></canvas> -->
+                </td>
+
+                <td>
+                    <div id="barChart"></div>
+                    <!-- <div id="barChart" style="width: 50%;  position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
+                </td>
+            </tr>
+        </table>
+    </body>
+    <script>
+
+        const textarea0 = document.getElementById("g_val");
+        const textarea1 = document.getElementById("g_lable");
+        const textarea2 = document.getElementById("g_lbl_val");
+        const btn0 = document.getElementById("g_btn1");
+        const btn1 = document.getElementById("g_btn2");
+
+        $(document).ready(function() {
+            $("#f2").prop("disabled",true);
+            $("#r1").prop("checked",true);
+            $("input:radio").click(function() {
+                if($(this).val() == "r1") {
+                    $("#f1").prop("disabled",false);
+                    $("#f2").prop("disabled",true);
+                } else {
+                    $("#f1").prop("disabled",true);
+                    $("#f2").prop("disabled",false);
+                }
+          });
+        });
+
+        if(textarea0.value == "") {
+            btn0.disabled = true;
+        }
+        if(textarea1.value == "" || textarea2.value == "") {
+            btn1.disabled = true;
+        }
+
+        function isValidInputForMethod1() {
+            if((textarea0.value).match(/^(?:\s*[a-zA-Z]+\s*)(?:,\s*[a-zA-Z]+\s*)*$/)) {
+                btn0.disabled = false;
+            } else if(textarea0.value == "") {
+                // val.setCustomValidity("Empty Input");
+                btn0.disabled = true;
+            } else {
+                // textarea0.setCustomValidity("allows only alphabet letters");
+                btn0.disabled = true;
+            }
+        }
+        
+        function isValidInputForMethod2() {
+            if( (textarea1.value != "" && textarea2.value != "") &&
+            ((textarea1.value).match(/^(?:\s*[a-zA-Z]+\s*)(?:,\s*[a-zA-Z]+\s*)*$/) 
+            && (textarea2.value).match(/^(\d+\s*,\s*)*\d+$/) ) ) {
+                btn1.disabled = false;
+                checkEqualLength();
+            } else {
+                btn1.disabled = true;
+            }
+        }
+        
+        function checkEqualLength() {
+            if( ((textarea1.value).split(",")).length === ((textarea2.value).split(",")).length) {
+                btn1.disabled = false;
+                checkeDuplication();
+            } else {
+                btn1.disabled = true;
+            }
+        };
+        
+        function checkeDuplication() {
+            const regex = /^(?!.*\b(\w+)\b.*,\s*\b\1\b)[A-Za-z]+(?:,\s*[A-Za-z]+)*$/;
+            if(regex.test(textarea1.value)) {
+                btn1.disabled = false;
+            } else {
+                btn1.disabled = true;
+            }
+        }
+        
+        textarea0.addEventListener("input",isValidInputForMethod1);
+        textarea1.addEventListener("input",isValidInputForMethod2);
+        textarea2.addEventListener("input",isValidInputForMethod2);
+        // btn0.addEventListener("submit",calculateMethod1);
+        // btn1.addEventListener("submit",calculateMethod2);
+
+        // function checkMethod2Input1(lbl) {
+        //     if((lbl.value).match(/^(?:\s*[a-zA-Z]+\s*)(?:,\s*[a-zA-Z]+\s*)*$/)) {
+        //         document.getElementById("g_btn2").disabled = false;
+        //     } else if(lbl.value == "") {
+        //         lbl.setCustomValidity("Empty Input");
+        //         document.getElementById("g_btn2").disabled = true;
+        //     } else {
+        //         lbl.setCustomValidity("allows only alphabet letters");
+        //         document.getElementById("g_btn2").disabled = true;
+        //     }
+        //     checkMethod1Input2(document.getElementById("g_lbl_val").value);
+        // }
+
+        // function checkMethod2Input2(freq) {
+        //     if((freq.value).match(/^(\d+\s*,\s*)*\d+$/)) {
+        //         document.getElementById("g_btn2").disabled = false;
+        //     } else if(freq.value == "") {
+        //         freq.setCustomValidity("Empty Input");
+        //         document.getElementById("g_btn2").disabled = true;
+        //     } else {
+        //         freq.setCustomValidity("allows only positive number");
+        //         document.getElementById("g_btn2").disabled = true;
+        //     }
+        //     checkMethod1Input1(document.getElementById("g_lable").value);
+        // }
+
+    </script>
+</html>
