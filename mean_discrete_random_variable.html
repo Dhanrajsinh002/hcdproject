@@ -8,108 +8,132 @@
     <link rel="stylesheet" href="./css/mean_discrete_random_variable.css">
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="./js/mean_discrete_random_variable.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
-<body>
-    <table border="1" style="width: 100%; text-align: center;">
-        <tr>
-            <th colspan="2">Mean & Standard Deviation of Discrete Random Variable</th>
-        </tr>
+<body class="bg-dark">
 
-        <tr style="width: 50%;">
-            <td style="width: 50%;">                    
-                <input type="radio" name="rbtn" id="r1" value="r1"/>
-                <label for="method1">Method 1</label>
-            </td>
+    <div class="well bg-transparent border-0">
 
-            <td style="width: 50%;">
-                <input type="radio" name="rbtn" id="r2" value="r2"/>
-                <label for="method2">Method 2</label>
-            </td>
-        </tr>
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th colspan="2"><div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1 ">Mean & Standard Deviation of Discrete Random Variable</div></th>
+            </tr>
+        
+            <tr style="width: 50%;">
+                <td style="width: 50%;">
+                    <div class="well well-sm row mx-md-3 fs-3">
+                        <input type="radio" name="rbtn" id="r1" value="r1" />
+                        <label for="r1">Method 1</label>
+                    </div>
+                </td>
+        
+                <td style="width: 50%;">
+                    <div class="well well-sm row mx-md-3 fs-3">
+                        <input type="radio" name="rbtn" id="r2" value="r2" />
+                        <label for="r2">Method 2</label>
+                    </div>
+                </td>
+            </tr>
+        
+            <tr>
+        
+                <td style="width: 50%;">
 
-        <tr>
-
-            <td style="width: 50%;">
-                <div>
-                    <fieldset id="f1">
-                        <table style="text-align: center; width: 100%;">
-                            <tr>
-                                <td>
-                                    <textarea cols="30" rows="5" id="msdrv_val" name="msdrv_val" placeholder="Enter Comma(,) separated values&#10;i.e. 19,20,20,19,21,27,20,21" required></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <!-- <input type="submit" id="g_btn1" value="Calculate" onclick="calculateMethod1(document.getElementById('g_val').value)"> -->
-                                    <button id="msdrv_btn1" onclick="calculateMSDRVM1(document.getElementById('msdrv_val').value)">Calculate</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>
-                                        Note: By selecting Method 1 you can only add repeatative values.
-                                    </p>
-                                </td>
-                            </tr>
-                            
-                        </table>
-                    </fieldset>                    
-                </div>
-            </td>
-            
-            <td style="width: 50%;">
-                <div>
-                    <fieldset id="f2">
-                        <table style="text-align: center; width: 100%">
-                            <tr>
-                                <td>
-                                    <textarea cols="30" rows="5" id="msdrv_lbl" name="msdrv_lbl" placeholder="Enter your labels here separated by Comma(,)&#10;i.e. 0,1,2,3,4" required></textarea>
-                                </td>
+                    <div class="well row mx-md-3">
                         
-                                <td>
-                                    <textarea cols="30" rows="5" id="msdrv_lbl_val" name="msdrv_lbl_val" placeholder="Enter your values here separated by Comma(,)&#10;i.e. 0.5,0.1,0.20,0.48,0.55" required></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <button id="msdrv_btn2" onclick="calculateMSDRVM2(document.getElementById('msdrv_lbl').value, document.getElementById('msdrv_lbl_val').value)">Calculate</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <p>
-                                        Note: By selecting Method 2 you can enter labels <br> and its respected relative frequencies (no of occurance).
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                </div>
-            </td>
+                        <fieldset id="f1">
+                            <table style="text-align: center; width: 100%;">
+                                <tr>
+                                    <td>
+                                        <textarea class="form-control fs-3" cols="30" rows="5" id="msdrv_val" name="msdrv_val"
+                                            placeholder="Enter Comma(,) separated values&#10;i.e. 19,20,20,19,21,27,20,21"
+                                            required></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button id="msdrv_btn1" class="btn btn-primary m-lg-5 fs-4"
+                                            onclick="calculateMSDRVM1(document.getElementById('msdrv_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="alert alert-warning fs-3">
+                                            Note: In Method 1 you can only add repeatative values.
+                                        </p>
+                                    </td>
+                                </tr>
+        
+                            </table>
+                        </fieldset>
+                    </div>
+                </td>
+        
+                <td style="width: 50%;">
 
-        </tr>
+                    <div class="well row mx-md-3">
 
-        <tr>
-            <td colspan="2">
-                <table id="msdrv_res" border="1" style="width: 100%;"></table>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <div id="pieChart"></div>
-                <!-- <div id="pieChart" style="width: 50%; position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
-                <!-- <canvas id="pieChart" width="637" height="300" style="position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: default;"></canvas> -->
-            </td>
-
-            <td>
-                <div id="barChart"></div>
-                <!-- <div id="barChart" style="width: 50%;  position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
-            </td>
-        </tr>
-
-    </table>
+                        <fieldset id="f2">
+                            <table style="text-align: center; width: 100%">
+                                <tr>
+                                    <td>
+                                        <div class="d-inline-block">
+                                            <textarea class="form-control fs-3" cols="30" rows="5" id="msdrv_lbl" name="msdrv_lbl"
+                                                placeholder="Enter your labels here separated by Comma(,)&#10;i.e. 0,1,2,3,4" required></textarea>
+                                        </div>
+                                    </td>
+        
+                                    <td>
+                                        <div class="d-inline-block">
+                                            <textarea class="form-control fs-3" cols="30" rows="5" id="msdrv_lbl_val" name="msdrv_lbl_val"
+                                                placeholder="Enter your values here separated by Comma(,)&#10;i.e. 0.5,0.1,0.20,0.48,0.55" required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="msdrv_btn2" class="btn btn-primary m-lg-5 fs-4"
+                                            onclick="calculateMSDRVM2(document.getElementById('msdrv_lbl').value, document.getElementById('msdrv_lbl_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <p class="alert alert-warning fs-3">
+                                            Note: In Method 2 you can enter labels and its respected Probabilities.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                    </div>
+                </td>
+        
+            </tr>
+        
+            <tr>
+                <td colspan="2">
+                    <div class="panel panel-default">
+                        <table id="msdrv_res" class="border border-3 rounded-pill table table-bordered table-hover table-light table-striped text-center fs-3"></table>
+                    </div>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>
+                    <div id="Histogram"></div>
+                </td>
+            </tr>
+        
+        </table>
+    </div>
+    
 </body>
 
 <script>
@@ -137,6 +161,10 @@
         msdrv_btn1.disabled = true;
     }
 
+    if(m2_msdrv_txt0.value == "" || m2_msdrv_txt1.value == "") {
+        msdrv_btn2.disabled = true;
+    }
+
     function checkM1Validity() {
         if( (m1_msdrv_txt0.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/) ) {
             msdrv_btn1.disabled = false;
@@ -149,19 +177,32 @@
 
     function checkM2Validity() {
         if( (m2_msdrv_txt0.value != "" && m2_msdrv_txt1.value != "") && 
-            ((m2_msdrv_txt0.value).match() 
-            && (m2_msdrv_txt1.value).match()) ) {}
+            ((m2_msdrv_txt0.value).match(/^(\d+\s*,\s*)*\d+$/) &&  
+            (m2_msdrv_txt1.value).match(/^[-+]?(?:\d+|\d*\.\d+|\d+\/\d+)(?:,[-+]?(?:\d+|\d*\.\d+|\d+\/\d+))*$/)) ) {
+                msdrv_btn2.disabled = false;
+                checkM2EqualLength();
+        } else {
+            msdrv_btn2.disabled = true;
+        }
     }
 
-    // function calculateMSDRV(val) {
-    //     $.ajax({
-    //         method: 'post',
-    //         url: './php/mean_discrete_random_variable.php',
-    //         data: {msdrv_val : val}
-    //     }).done(function (response) {
-    //         alert(response);
-    //     })
-    // }
+    function checkM2EqualLength() {
+        if( ((m2_msdrv_txt0.value).split(",")).length === ((m2_msdrv_txt1.value).split(",")).length ) {
+            msdrv_btn2.disabled = false;
+            checkM2Duplication();
+        } else {
+            msdrv_btn2.disabled = true;
+        }
+    }
+
+    function checkM2Duplication() {
+        const Regex = /^(?!.*\b(\w+)\b.*,\s*\b\1\b)[0-9]+(?:,\s*[0-9]+)*$/;
+        if(Regex.test(m2_msdrv_txt0.value)) {
+            msdrv_btn2.disabled = false;
+        } else {
+            msdrv_btn2.disabled = true;
+        }
+    }
 
     m1_msdrv_txt0.addEventListener("input",checkM1Validity)
     m2_msdrv_txt0.addEventListener("input",checkM2Validity)

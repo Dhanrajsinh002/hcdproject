@@ -10,15 +10,20 @@ if(isset($_POST["val_arr"])) {
     $median = findMedian($inp_arr);
     $mode = findMode($inp_arr);
 
-    echo "  <tr> 
-                <td colspan='2' id='meanResult'>Mean: ".$mean."</td> 
-            </tr> 
+    echo "  <thead>
             <tr> 
-                <td colspan='2' id='medianResult'>Median: ".$median."</td> 
-            </tr> 
-            <tr> 
-                <td colspan='2' id='modeResult'>Mode: ".$mode."</td> 
-            </tr>";
+                <th scope='col text-center' id='meanResult'>Mean</td> 
+                <th scope='col text-center' id='medianResult'>Median</td> 
+                <th scope='col text-center' id='modeResult'>Mode</td> 
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class='text-center' id='meanResult'>".$mean."</td> 
+                <td class='text-center' id='medianResult'>".$median."</td> 
+                <td class='text-center' id='modeResult'>".$mode."</td> 
+            </tr>
+            </tbody>";
 }
 
 function findMean($arr) {

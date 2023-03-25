@@ -15,15 +15,35 @@ if(isset($_POST["mvsd_data"])) {
     $variance = findVariance($arr);
     $sd = findStandardDeviation($arr);
 
-    echo "  <tr> 
-                <td colspan='2' id='meanResult'>Mean: ".$mean."</td> 
-            </tr> 
-            <tr> 
-                <td colspan='2' id='medianResult'>Variance: ".$variance."</td> 
-            </tr> 
-            <tr> 
-                <td colspan='2' id='modeResult'>Standard Deviation: ".$sd."</td> 
-            </tr>";
+    // echo "  <div class='row'>
+    //             <div class='col text-center fs-3 border pt-3 pb-3'><p class='font-weight-bold'> Mean</p></div>
+    //             <div class='col text-center fs-3 border pt-3 pb-3'><p class='font-weight-bold'> Varience</p></div>
+    //             <div class='col text-center fs-3 border pt-3 pb-3'><p class='font-weight-bold'> Standard Deviation</p></div>
+    //         </div>
+
+    //         <div class='row'>
+    //             <div class='col text-center fs-3 border pt-3 pb-3' id='meanResult'><p class='font-weight-bold'>".$mean."</p></div>
+    //             <div class='col text-center fs-3 border pt-3 pb-3' id='medianResult'><p class='font-weight-bold'>".$variance."</p></div>
+    //             <div class='col text-center fs-3 border pt-3 pb-3' id='modeResult'><p class='font-weight-bold'>".$sd."</p></div>
+    //         </div>
+    //         ";
+
+    echo "  <thead>
+                <tr>
+                    <th scope='col text-center'>Mean</th>
+                    <th scope='col text-center'>Varience</th>
+                    <th scope='col text-center'>Standard Deviation</th>
+                </tr>
+            </thead>
+
+            <tbody>            
+                <tr> 
+                    <td id='meanResult'>".$mean."</td> 
+                    <td id='medianResult'>".$variance."</td>  
+                    <td id='modeResult'>".$sd."</td> 
+                </tr>
+            </tbody>
+            ";
 }
 
 function findMean($arr) {
@@ -67,4 +87,3 @@ function findStandardDeviation($arr) {
 
     return round(sqrt($nume/ ($sample_size - 1)), 2);
 }
-?>

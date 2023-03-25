@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regression Equation</title>
+    <link rel="stylesheet" href="./css/regression_equation.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/regression_equation.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+<body class="bg-dark">
+
+    <div class="well bg-transparent border-0 text-center">
+
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th><div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">Regression Equation Calculator</div></th>
+            </tr>
+        
+            <tr>
+                <td>
+
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <div class="d-inline-block">
+                                            <label class="fs-4" for="re_x_val">Enter <i><b>x</b></i> values:- </label>
+                                            <textarea class="form-control fs-3 m-3" name="re_x_val" id="re_x_val" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,9,3,7,0,1,5" required></textarea>
+                                        </div>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <div class="d-inline-block">
+                                            <label class="fs-4" for="re_y_val">Enter <i><b>y</b></i> values:- </label>
+                                            <textarea class="form-control fs-3 m-3" name="re_y_val" id="re_y_val" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,0.9,-3,7,-4,1,5" required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="re_btn" class="btn btn-primary m-lg-3 fs-4"
+                                            onclick="calculateRE(document.getElementById('re_x_val').value,document.getElementById('re_y_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+        
+                </td>
+            </tr>
+        
+            <tr>
+                <td>
+                    <table id="re_result" class="table table-bordered table-light table-hover table-striped text-center fs-3"></table>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div id="comboPlot" class="w-100"></div>
+                    </div>
+                </td>
+            </tr>
+        
+        </table>
+    </div>
+
+</body>
+
+<script>
+    const re_x_val = document.getElementById("re_x_val");
+    const re_y_val = document.getElementById("re_y_val");
+    const re_btn = document.getElementById("re_btn");
+
+    if(re_x_val.value == "" || re_y_val.value == "") {
+        re_btn.disabled = true;
+    }
+
+    function checkREValidity() {
+        if((re_x_val.value).match(/^(?!.*,,)(?!.*,$)(?!^,)\d+(?:\.\d+)?(?:,\d+(?:\.\d+)?)*$/) && 
+            (re_y_val.value).match(/^(?!.*,,)(?!.*,$)(?!^,)[+-]?\d+(?:\.\d+)?(?:,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+            re_btn.disabled = false;
+            checkEqualLength();
+        } else if(re_x_val.value == "" || re_y_val.value == "") {
+            re_btn.disabled = true;
+        } else {
+            re_btn.disabled = true;
+        }
+    }
+
+    function checkEqualLength() {
+        if( ((re_x_val.value).split(",")).length === ((re_y_val.value).split(",")).length) {
+            re_btn.disabled = false;
+        } else {
+            re_btn.disabled = true;
+        }
+    }
+
+    function furtherProcess() {
+        // const eq1_val = document.getElementById('eq1');
+        // const eq2_val = document.getElementById('eq2');
+        // const eq_btn = document.getElementById('eq_btn');
+
+        // if(eq1_val.value == '' || eq2_val.value == '') {
+        //     eq_btn.disabled = true;
+        // }
+
+        // function checkValid() {
+        //     if((eq1_val.value).match(/^[0-9]+$/) && (eq2_val.value).match(/^[0-9]+$/)) {
+        //         eq_btn.disabled = false;
+        //     } else if (eq1_val.value == '' || eq2_val.value == '') {
+        //         eq_btn.disabled = true;
+        //     } else {
+        //         eq_btn.disabled = true;
+        //     }
+        // }
+
+        // eq1_val.addEventListener('input',checkValid);
+        // eq2_val.addEventListener('input',checkValid);
+
+
+        const eq1_sign = document.getElementById('eq1_sign');
+        const eq1_b0 = document.getElementById('eq1_b0');
+        const eq1_b1 = document.getElementById('eq1_b1');
+        const eq1_x = document.getElementById('eq1_x');
+        const eq2_sign = document.getElementById('eq2_sign');
+        const eq2_b0 = document.getElementById('eq2_b0');
+        const eq2_b1 = document.getElementById('eq2_b1');
+        const eq2_x = document.getElementById('eq2_x');
+        const eq_btn = document.getElementById('eq_btn');
+
+        if(eq1_sign.value == "" || eq1_b0.value == "" || eq1_b1.value == "" || eq1_x.value == "" || eq2_x.value == "") {
+            eq_btn.disabled = true;
+            console.log("IF CALLED");
+        }
+        
+        function checkValid() {
+            if( ((/^[+-]$/).test(eq1_sign.value)) || ((/^-?\d*\.?\d+$/).test(eq1_b0.value)) || ((/^[0-9]+$/).test(eq1_b1.value)) 
+                || ((/^-?\d*\.?\d+$/).test(eq1_x.value)) || ((/^-?\d*\.?\d+$/).test(eq2_x.value)) ) {
+                
+                    eq2_b0.value = eq1_b0.value;
+                    eq2_b1.value = eq1_b1.value;
+                    eq2_sign.value = eq1_sign.value;
+                
+                    eq_btn.disabled = false;
+
+                    // console.log("VALID IF");
+                } else if(eq1_sign.value == "" || eq1_b0.value == "" || eq1_b1.value == "" || eq1_x.value == "" || eq2_x.value == "") {
+                    eq_btn.disabled = true;
+                    // console.log("VALID ELSE IF");
+                } else {
+                    eq_btn.disabled = true;
+                    // console.log("VALID ELSE");
+            }
+        }
+
+        eq1_b0.addEventListener("input",checkValid);
+        eq1_b1.addEventListener("input",checkValid);
+        eq1_x.addEventListener("input",checkValid);
+        eq1_sign.addEventListener("input",checkValid);
+    }
+    
+    // function checkXValidity() {
+    //     if((re_y_val.value).match(/^[+-]?(\d+(\.\d+)?|\.\d+)$/)) {
+    //         re_btn.disabled = false;
+    //     } else if(re_y_val.value == "") {
+    //         re_btn.disabled = true;
+    //     } else {
+    //         re_btn.disabled = true;
+    //     }
+    // }
+
+    re_x_val.addEventListener("input",checkREValidity);
+    re_y_val.addEventListener("input",checkREValidity);
+</script>
+</html>

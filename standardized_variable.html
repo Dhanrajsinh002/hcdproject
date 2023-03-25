@@ -7,40 +7,55 @@
     <link rel="stylesheet" href="./css/standardized_variable.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="./js/standardized_variable.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <title>Standardized Variable</title>
 </head>
-<body>
-    <table border="1" style="width: 100%; text-align: center;">
-        <tr>
-            <th>Standardized Variable</th>
-        </tr>
-
-        <tr>
-            <td>
-                <table border="1" style="margin: 0 auto; text-align: center; display: table; width: 50%;">
-                    <tr>
-                        <td>
-                            <label for="z_lbl">Enter Your x Values to Calculate<br>its z values</label>
-                        </td>
-
-                        <td>
-                            <textarea name="z_val" id="z_val" placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" cols="30" rows="5" required></textarea>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2">
-                            <button id="z_cal" onclick="calculateZ(document.getElementById('z_val').value)">Calculate</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <table id="z_result" border="1" style="margin: 0 auto; text-align: center; display: table; width: 100%;"></table>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+<body class="bg-dark">
+    <div class="well bg-transparent border-0 text-center">
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th> <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1"> Standardized Variable </div></th>
+            </tr>
+        
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                <tr>
+                                    <td>
+                                        <label class="fs-4" for="z_val">Enter Your x Values to Calculate<br>its z values</label>
+                                    </td>
+                            
+                                    <td>
+                                        <textarea class="form-control fs-3" name="z_val" id="z_val" placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6"
+                                            cols="30" rows="5" required></textarea>
+                                    </td>
+                                </tr>
+                            
+                                <tr>
+                                    <td colspan="2">
+                                        <button class="btn btn-primary m-lg-3 fs-4" id="z_cal" onclick="calculateZ(document.getElementById('z_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                            
+                                <tr>
+                                    <div class="bg-dark">
+                                        <table id="z_result" class="table table-bordered table-light table-hover table-striped text-center fs-3"></table>
+                                    </div>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 
 <script>
@@ -54,12 +69,22 @@
     function checkZInput() {
         if((z_txt.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
             z_btn.disabled = false;
+            // checkeDuplication();
         } else if(z_txt.value == "") {
             z_btn.disabled = true;
         } else {
             z_btn.disabled = true;
         }
     }
+
+    function checkeDuplication() {
+            const regex = /^(?!.*\b(\-?\d+(?:\.\d+)?)\b.*,\s*\b\1\b)(?:\-?\d+(?:\.\d+)?)(?:,\s*\-?\d+(?:\.\d+)?)*$/;
+            if (regex.test(z_txt.value)) {
+                z_btn.disabled = false;
+            } else {
+                z_btn.disabled = true;
+            }
+        }
 
     z_txt.addEventListener("input",checkZInput)
 </script>

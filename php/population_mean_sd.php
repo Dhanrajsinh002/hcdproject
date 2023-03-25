@@ -7,12 +7,21 @@ if(isset($_POST['msd_data'])) {
 
     $mean = findMean($arr);
     $sd = findSD($arr, count($arr), $mean);
-    echo "  <tr>
-                <td colspan='2'>Population Mean:- ".$mean."</td>
-            </tr>
+    echo "  
+            <thead>
             <tr>
-                <td colspan='2'>Population S.D.:- ".$sd."</td>
-            </tr>";
+                <th scope='col text-center'>Population Mean</th>
+                <th scope='col text-center'>Population S.D.</th>
+            </tr>
+            
+            </thead>
+
+            <tbody>
+            <tr>
+                <td class='text-center'> ".$mean."</td>
+                <td class='text-center'> ".$sd."</td>
+            </tr>
+            </tbody>";
 }
 
 function findMean($arr) {

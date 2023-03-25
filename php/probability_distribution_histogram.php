@@ -46,18 +46,22 @@ function findResultOfPDHMethod2($lbl, $val) {
         array_push($datapoints, array("x" => (string)$lbl[$i], "y" => $m2rel_freqs[$i]) );
     }
 
-    echo "<tr>
-                <th>Labels</th>
-                <th>Frequency</th>
-                <th>Probability <i><b>P(X = x)</b></i> </th>
-            </tr>";
+    echo "  <thead class='thead-dark'>
+                <tr>
+                    <th scope='col text-center'>Labels</th>
+                    <th scope='col text-center'>Frequency</th>
+                    <th scope='col text-center'>Probability <i><b>P(X = x)</b></i> </th>
+                </tr>
+            </thead><tbody>";
     for($i = 0; $i < count($lbl); $i++) {
         echo "<tr style='text-align: center;'>
-                    <td style='width: 25%;'>".$lbl[$i]."</td>
-                    <td style='width: 25%;'>".$val[$i]."</td>
-                    <td style='width: 50%;'>".$m2rel_freqs[$i]."</td>
+                    <td class='text-center' style='width: 25%;'>".$lbl[$i]."</td>
+                    <td class='text-center' style='width: 25%;'>".$val[$i]."</td>
+                    <td class='text-center' style='width: 50%;'>".$m2rel_freqs[$i]."</td>
                 </tr>";
     }
+
+    echo "</tbody>";
 
     return plotHistogram($datapoints);
 }

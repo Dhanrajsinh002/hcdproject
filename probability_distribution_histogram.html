@@ -8,116 +8,148 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="./js/probability_distribution_histogram.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <title>Probability Distribution Histogram</title>
 </head>
-<body>
-    <table border="1" style="text-align: center; width: 100%;" id="mainTableGraphs">
-        <tr>
-            <td colspan="2" align="center">Probability Distribution Histogram Calculator</td>
-        </tr>
+<body class="bg-dark">
+
+    <div class="well bg-transparent border-0">
+
+        <table style="text-align: center; width: 100%;" id="mainTableGraphs">
+            <tr>
+                <td colspan="2" align="center"><div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1 ">Probability Distribution Histogram Calculator</div></td>
+            </tr>
         
-        <tr style="width: 50%;">
-            <!-- <td style="width: 50%;">                    
-                <input type="radio" name="rbtn" id="r1" value="r1"/>
-                <label for="method1">Method 1</label>
-            </td> -->
-
-            <td style="width: 50%;">
-                <!-- <input type="radio" name="rbtn" id="r2" value="r2"/> -->
-                <label for="method2">Method 2</label>
-            </td>
-        </tr>
-
-        <tr>
-
-            <!-- <td style="width: 50%;">
-                <div>
-
-                        <fieldset id="f1">
-                            <table style="text-align: center; width: 100%;">
-                                <tr>
-                                    <td>
-                                        <textarea cols="30" rows="5" id="pdh_val" name="pdh_val" placeholder="Enter Comma(,) separated values&#10;i.e. A,B,C,D,F,E,A,C,B" required></textarea>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <button id="pdh_btn1" onclick="calculatePDHMethod1(document.getElementById('pdh_val').value)">Calculate</button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <p>
-                                            Note: By selecting Method 1 you can only add repeatative values.
-                                        </p>
-                                    </td>
-                                </tr>
-                                
-                            </table>
-                        </fieldset>
-                    
-                </div>
-            </td> -->
-            
-            <td style="width: 50%;">
-                <div>
-
-                    <!-- <form> -->
+            <tr style="width: 50%;">
+                
+                <td style="width: 50%;">
+                    <div class="well well-sm row mx-md-3 ">
+                        <input type="radio" name="rbtn" id="r1" value="r1"disabled />
+                        <label class="fs-4" for="r1">Method 1</label>
+                    </div>
+                </td>
+                
+                <td style="width: 50%;">
+                    <div class="well well-sm row mx-md-3 ">
+                        <input type="radio" name="rbtn" id="r2" value="r2"/>
+                        <label class="fs-4" for="r2">Method 2</label>
+                    </div>
+                </td>
+            </tr>
+        
+            <tr>
+        
+                <td style="width: 50%;">
+                        <div class="well row mx-md-3">
+        
+                                <fieldset id="f1">
+                                    <table style="text-align: center; width: 100%;">
+                                        <tr>
+                                            <td>
+                                                <div class="d-inline-block">
+                                                    <textarea class="form-control fs-3" cols="30" rows="5" id="pdh_val" name="pdh_val" placeholder="Enter Comma(,) separated values&#10;i.e. A,B,C,D,F,E,A,C,B" required></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+        
+                                        <tr>
+                                            <td>
+                                                <button class="btn btn-primary m-lg-5 fs-4" id="pdh_btn1" onclick="calculatePDHMethod1(document.getElementById('pdh_val').value)">Calculate</button>
+                                            </td>
+                                        </tr>
+        
+                                        <tr>
+                                            <td>
+                                                <p class="alert alert-warning fs-4">
+                                                    Note: By selecting Method 1 you can only add repeatative values.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        
+                                    </table>
+                                </fieldset>
+                            
+                        </div>
+                    </td>
+        
+                <td style="width: 50%;">
+                    <div class="well row mx-md-3">
+        
+                        <!-- <form> -->
                         <fieldset id="f2">
                             <table style="text-align: center; width: 100%">
                                 <tr>
                                     <td>
-                                        <textarea cols="30" rows="5" id="pdh_lable" name="pdh_lable" placeholder="Enter your labels here separated by Comma(,)&#10;i.e. A,B,C,D,F,E" required></textarea>
+                                        <div class="d-inline-block">
+                                            <textarea class="form-control fs-3" cols="30" rows="5" id="pdh_lable" name="pdh_lable"
+                                                placeholder="Enter your labels here separated by Comma(,)&#10;i.e. 0,1,2,3,4,5" required></textarea>
+                                        </div>
                                     </td>
-                            
+        
                                     <td>
-                                        <textarea cols="30" rows="5" id="pdh_lbl_val" name="pdh_lbl_val" placeholder="Enter your values here separated by Comma(,)&#10;i.e. 25,5,3,10,11,1" required></textarea>
+                                        <div class="d-inline-block">
+                                            <textarea class="form-control fs-3" cols="30" rows="5" id="pdh_lbl_val" name="pdh_lbl_val"
+                                                placeholder="Enter your values here separated by Comma(,)&#10;i.e. 25,5,3,10,11,1" required></textarea>
+                                        </div>
                                     </td>
                                 </tr>
-
+        
                                 <tr>
                                     <td colspan="2">
-                                        <button id="pdh_btn2" onclick="calculatePDHMethod2(document.getElementById('pdh_lable').value, document.getElementById('pdh_lbl_val').value)">Calculate</button>
+                                        <button class="btn btn-primary m-lg-5 fs-4" id="pdh_btn2"
+                                            onclick="calculatePDHMethod2(document.getElementById('pdh_lable').value, document.getElementById('pdh_lbl_val').value)">Calculate</button>
                                     </td>
                                 </tr>
-
+        
                                 <tr>
                                     <td colspan="2">
-                                        <p>
-                                            Note: By selecting Method 2 you can enter labels <br> and its respected frequencies (no of occurance).
+                                        <p class="alert alert-warning fs-4">
+                                            Note: By selecting Method 2 you can enter labels and its respected frequencies.
                                         </p>
                                     </td>
                                 </tr>
                             </table>
                         </fieldset>
-                    <!-- </form> -->
-                    
-                </div>
-            </td>
+                        <!-- </form> -->
+        
+                    </div>
+                </td>
+        
+            </tr>
+        
+            <tr>
+                <td colspan="2">
+                    <div class="panel panel-default">
+                        <table id="result" class="border border-3 rounded-pill table table-bordered table-hover table-light table-striped text-center fs-3"></table>
+                    </div>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>
+                    <div class="w-100 ">
+                        <div id="Histogram" style="width: 45%; position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div>
+                    </div>
+                    <!-- <div id="pieChart" style="width: 50%; position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
+                    <!-- <canvas id="pieChart" width="637" height="300" style="position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: default;"></canvas> -->
+                </td>
+        
+                <td>
+                    <div class="w-100 ">
+                        <div id="barChart" style="width: 45%; position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div>
+                    </div>
+                    <!-- <div id="barChart" style="width: 50%;  position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
+                </td>
+            </tr>
+        </table>
 
-        </tr>
-
-        <tr>
-            <td colspan="2">
-                <table id="result" border="1" style="width: 100%;"></table>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <div id="Histogram"></div>
-                <!-- <div id="pieChart" style="width: 50%; position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
-                <!-- <canvas id="pieChart" width="637" height="300" style="position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: default;"></canvas> -->
-            </td>
-
-            <td>
-                <div id="barChart"></div>
-                <!-- <div id="barChart" style="width: 50%;  position: absolute; -webkit-tap-highlight-color: transparent; user-select: none; cursor: pointer;"></div> -->
-            </td>
-        </tr>
-    </table>
+    </div>
+  
 </body>
 <script>
     const pdh_m1_txt0 = document.getElementById("pdh_val");
@@ -126,23 +158,23 @@
     const pdh_btn1 = document.getElementById("pdh_btn1");
     const pdh_btn2 = document.getElementById("pdh_btn2");
 
-    // $(document).ready(function() {
-    //         $("#f2").prop("disabled",true);
-    //         $("#r1").prop("checked",true);
-    //         $("input:radio").click(function() {
-    //             if($(this).val() == "r1") {
-    //                 $("#f1").prop("disabled",false);
-    //                 $("#f2").prop("disabled",true);
-    //             } else {
-    //                 $("#f1").prop("disabled",true);
-    //                 $("#f2").prop("disabled",false);
-    //             }
-    //       });
-    //     });
+    $(document).ready(function() {
+            $("#f1").prop("disabled",true);
+            $("#r2").prop("checked",true);
+            $("input:radio").click(function() {
+                if($(this).val() == "r1") {
+                    $("#f1").prop("disabled",false);
+                    $("#f2").prop("disabled",true);
+                } else {
+                    $("#f1").prop("disabled",true);
+                    $("#f2").prop("disabled",false);
+                }
+          });
+        });
 
-        // if(pdh_m1_txt0.value == "") {
-        //     pdh_btn1.disabled = true;
-        // }
+        if(pdh_m1_txt0.value == "") {
+            pdh_btn1.disabled = true;
+        }
 
         if(pdh_m2_txt0.value == "" || pdh_m2_txt1.value == "") {
             pdh_btn2.disabled = true;
@@ -150,7 +182,7 @@
 
         function isValidPDHInputMethod1() {
             if((pdh_m1_txt0.value).match(/^(?:\s*[a-zA-Z]+\s*)(?:,\s*[a-zA-Z]+\s*)*$/)) {
-                pdh_btn1.disabled = false;
+                // pdh_btn1.disabled = false;
             } else if(pdh_m1_txt0.value == "") {
                 // val.setCustomValidity("Empty Input");
                 pdh_btn1.disabled = true;
@@ -166,7 +198,7 @@
             && (pdh_m2_txt1.value).match(/^(\d+\s*,\s*)*\d+$/) ) ) {
                 pdh_btn2.disabled = false;
                 checkEqualLength();
-                checkeDuplication();
+                // checkeDuplication();
             } else {
                 pdh_btn2.disabled = true;
             }
@@ -175,6 +207,7 @@
         function checkEqualLength() {
             if( ((pdh_m2_txt0.value).split(",")).length === ((pdh_m2_txt1.value).split(",")).length) {
                 pdh_btn2.disabled = false;
+                checkeDuplication();
             } else {
                 pdh_btn2.disabled = true;
             }

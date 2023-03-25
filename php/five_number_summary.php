@@ -21,52 +21,40 @@ if(isset($_POST["fns_val"])) {
     $max_len = $Q3 + 1.5 * $IQR;
     
     $outliers = findOutliers($arr);
-    
-    // print_r($arr);
-    // echo $arr[count($arr)-1];
 
-    // echo "Q1-".$Q1;
-    // echo "\nQ2-".$Q2;
-    // echo "\nQ3-".$Q3;
-    // echo "\nIQR".$IQR;
-    // echo "\nMin Lim-".$min_len;
-    // echo "\nMax Lim-".$max_len;
-    // print_r($outliers);
-
-    echo "  <tr>
-                <th>First Quartile (Q1)</th>
-                <th>Second Quartile (Q2)</th>
-                <th>Third Quartile (Q3)</th>
-                <th>Inter Quartile Range</th>
-                <th>Lower Limit</th>
-                <th>Upper Limit</th>
-                <th>Outliers</th>
-            </tr>
+    echo "  <thead>
+                <tr>
+                    <th scope='col text-center'>First Quartile (Q1)</th>
+                    <th scope='col text-center'>Second Quartile (Q2)</th>
+                    <th scope='col text-center'>Third Quartile (Q3)</th>
+                    <th scope='col text-center'>Inter Quartile Range</th>
+                    <th scope='col text-center'>Lower Limit</th>
+                    <th scope='col text-center'>Upper Limit</th>
+                    <th scope='col text-center'>Outliers</th>
+                </tr>
+            </thead>
             
-            <tr>
-                <td style='width: 14.28%;'>".$Q1."</td>
-                <td style='width: 14.28%;'>".$Q2."</td>
-                <td style='width: 14.28%;'>".$Q3."</td>
-                <td style='width: 14.28%;'>".$IQR."</td>
-                <td style='width: 14.28%;'>".$min_len."</td>
-                <td style='width: 14.28%;'>".$max_len."</td><td>";
-            for($i = 0; $i < count($outliers); $i++) {
-                echo $outliers[$i]." ";
-            }
-        echo "</td></tr>";
+            <tbody>
+                <tr>
+                    <td class='text-center' >".$Q1."</td>
+                    <td class='text-center' >".$Q2."</td>
+                    <td class='text-center' >".$Q3."</td>
+                    <td class='text-center' >".$IQR."</td>
+                    <td class='text-center' >".$min_len."</td>
+                    <td class='text-center' >".$max_len."</td><td>";
+                    if(count($outliers) == 0) {
+                        echo "-";
+                    } else {
+                        for($i = 0; $i < count($outliers); $i++) {
+                            echo $outliers[$i]." ";
+                        }
+                    }
+    echo "          </td>
+                </tr>
+            </tbody>";
 
-    array_push($datapoints, array("label" => "Boxplot", "y" => array(5,15,16,20,21,25,26,27,30,30,31,32,32,34,35,38,38,41,43,66)));
-    // print_r($datapoints);
-    // exit(0);
-    // $dataPoints = array(
-	// array("label" => "Oven", "y" => array(4, 6, 8, 9, 7)),
-	// array("label" => "Microwawe", "y" => array(5, 6, 7, 8, 6.5)),
-	// array("label" => "PC & Peripherals", "y" => array(6, 8, 10, 11, 9.5)),
-	// array("label" => "Air Conditioner", "y" => array(8, 9, 13, 14, 10.5)),
-	// array("label" => "Dishwasher", "y" => array(5, 7, 9, 12, 7.5)),
-	// array("label" => "Electric Kettle", "y" => array(4, 6, 8, 9, 7)),
-	// array("label" => "Fridge", "y" => array(8, 9, 12, 13, 11))
-    // );
+    array_push($datapoints, array("label" => "Boxplot", "y" => array( min($arr), $Q1, $Q2, $Q3, max($arr) )));
+
     return boxPlots($datapoints);
 }
 
