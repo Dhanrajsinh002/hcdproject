@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working with Normally Distributed Variable</title>
+    <link rel="stylesheet" href="./css/working_with_normally_distributed_variable.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/working_with_normally_distributed_variable.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+
+<body class="bg-dark">
+
+    <div class="well bg-transparent border-0 text-center">
+
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th colspan="2">
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">Working with Normally Distributed Variable</div>
+                </th>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="mean_val">Determine <i><b>μ</b></i></label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="mean_val" name="mean_val"
+                                            required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="sd_val">Determine <i><b>σ</b></i></label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="sd_val" name="sd_val"
+                                            required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <select class="form-select-sm fs-3" aria-label="Disabled select example"
+                                            name="conditions" id="conditions">
+                                            <!-- oninput="toggleInput()" name="conditions" id="conditions"> -->
+                                            <option value="left_of">Left of</option>
+                                            <option value="right_of">Right of</option>
+                                            <option value="between_of">Between of</option>
+                                            <option value="outside_of">Outside of</option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <button id="z_btn" class="btn btn-primary m-lg-3 fs-4"
+                                            onclick="calculatePD(document.getElementById('mean_val').value,document.getElementById('sd_val').value,document.getElementById('conditions').value)">Calculate</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="bg-white">
+                                            <table id="ndv_res"
+                                                class="table table-bordered table-light table-hover table-striped text-center fs-3">
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+</body>
+
+<script>
+
+    const mean_val = document.getElementById("mean_val");
+    const sd_val = document.getElementById("sd_val");
+    const z_btn = document.getElementById("z_btn");
+    // const conditions = document.getElementById("conditions");
+
+    if (mean_val.value == "" || sd_val.value == "") {
+        z_btn.disabled = true;
+    }
+
+    // function toggleInput() {
+    //     if (conditions.value === "between_of" || conditions.value === "outside_of") {
+    //         z2_val.disabled = false;
+    //         z2_val.setAttribute("required", "");
+    //         checkValidZ1();
+    //     } else {
+    //         z2_val.disabled = true;
+    //         z2_val.removeAttribute("required", "");
+    //         checkValidZ0();
+    //     }
+    // }
+
+    function checkValidZ() {
+        // it will check enter should be either positive or negative or positive decimal or negative decimal
+        if ((mean_val.value).match(/^-?\d+(\.\d+)?$/) 
+        && (sd_val.value).match(/^-?\d+(\.\d+)?$/)) {
+            z_btn.disabled = false;
+        } else if (mean_val.value == "") {
+            z_btn.disabled = true;
+        } else {
+            z_btn.disabled = true;
+        }
+    }
+
+    // function checkValidZ1() {
+    //     // it will check enter should be either positive or negative or positive decimal or negative decimal
+    //     if ((sd_val.value).match(/^-?\d+(\.\d+)?$/)) {
+    //         z_btn.disabled = false;
+    //     } else if (sd_val.value == "") {
+    //         z_btn.disabled = true;
+    //     } else {
+    //         z_btn.disabled = true;
+    //     }
+    // }
+
+    mean_val.addEventListener("input", checkValidZ);
+    sd_val.addEventListener("input", checkValidZ);
+</script>
+
+</html>

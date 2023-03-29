@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normal Probability Plots</title>
+    <link rel="stylesheet" href="./css/normal_probability_plots.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/normal_probability_plots.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+<body class="bg-dark">
+    
+    <div class="well bg-transparent border-0 text-center">
+    
+        <table style="width: 100%; text-align: center;" id="mainTableMMM">
+            <tr>
+                <th>
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">
+                        Normal Probability Plots
+                    </div>
+                </th>
+            </tr>
+    
+            <tr>
+                <td>
+
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+    
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                
+                                <tr>
+                                    <td>
+                                        <label class="fs-3" for="npp_val">Enter Your Values to Calculate<br> Normal Probability:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control fs-3" cols="30" rows="5" id="npp_val" name="npp_val"
+                                            placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" minlength="5" maxlength="30"
+                                            required></textarea>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="npp_btn" class="btn btn-primary m-lg-3 fs-4"
+                                            onclick="calculateNPP(document.getElementById('npp_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="bg-white">
+                                            <table id="nppTable"
+                                                class="table table-bordered table-light table-hover table-striped text-center fs-3">
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="w-100" id="nppScatter">
+                                            <!-- <canvas id="nppScatter" class="w-100"></canvas> -->
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+
+                </td>
+    
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+<script>
+
+    const npp_val = document.getElementById("npp_val");
+    const npp_btn = document.getElementById("npp_btn");
+
+    if(npp_val.value == "") {
+        npp_btn.disabled = true;
+    }
+
+    function checkValidNPP() {
+        // it only allows postive, negative, positive decimal, negative decimal numbers
+        if((npp_val.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+            npp_btn.disabled = false;
+        } else if(npp_val.value == "") {
+            npp_btn.disabled = true;
+        } else {
+            npp_btn.disabled = true;
+        }
+    }
+
+    npp_val.addEventListener("input",checkValidNPP)
+
+</script>
+
+</html>

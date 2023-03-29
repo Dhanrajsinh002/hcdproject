@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomial Distribution</title>
+    <link rel="stylesheet" href="./css/normal_approximation_binomial_variable.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/normal_approximation_binomial_variable.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body class="bg-dark">
+
+    <div class="well bg-transparent border-0 text-center">
+
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th colspan="2">
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">
+                        Normal Approximation Binomial Variable </div>
+                </th>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="nabv_vals">Determine <i><b>n</b></i> no. of trials:-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input type="text" class="form-control fs-3 m-3" name="nabv_vals" id="nabv_vals" required/>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="nabv_p">Determine <i><b>p</b></i> success
+                                            Probability:-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" name="nabv_p" id="nabv_p" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="nabv_x">Determine <i><b>X</b></i> no. of positive
+                                            outcomes:-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="nabv_x" name="nabv_x" required>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <select class="form-select-sm fs-3" aria-label="Disabled select example"
+                                            name="conditions" id="conditions" disabled>
+                                            <option value="equal">P(X = x) = </option>
+                                            <option value="less_equal">P(X ≤ x) =</option>
+                                            <option value="greter_equal">P(X ≥ x) =</option>
+                                        </select>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <button id="nabv_btn" class="btn btn-primary m-lg-3 fs-4"
+                                            onclick="calculateBinomialProbability(document.getElementById('nabv_vals').value,document.getElementById('nabv_p').value,document.getElementById('nabv_x').value,document.getElementById('conditions').value)">Calculate</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="bg-white">
+                                            <table id="nabv_result"
+                                                class="table table-bordered table-light table-hover table-striped text-center fs-3">
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</body>
+
+<script>
+
+    const nabv_vals = document.getElementById("nabv_vals");
+    const nabv_p = document.getElementById("nabv_p");
+    const nabv_x = document.getElementById("nabv_x");
+    const conditions = document.getElementById("conditions");
+    const nabv_btn = document.getElementById("nabv_btn");
+
+    if (nabv_vals.value == "" || nabv_p.value == "" || nabv_x.value == "") {
+        nabv_btn.disabled = true;
+        nabv_x.disabled = true;
+        conditions.disabled = true;
+    }
+
+    function checkBDNValidity() {
+        if ((nabv_vals.value).match(/^[0-9]+(?:\.[0-9]+)?$/)) {
+            bd_x.disabled = false;
+            conditions.disabled = false;
+            checkBDPValidity();
+        } else if (nabv_vals.value == "") {
+            nabv_btn.disabled = true;
+            nabv_x.disabled = true;
+            conditions.disabled = true;
+        } else {
+            nabv_btn.disabled = true;
+            nabv_x.disabled = true;
+            conditions.disabled = true;
+        }
+    }
+
+    function checkBDPValidity() {
+        if ((nabv_p.value).match(/^0*(?:1(?:\.0+)?|0(?:\.\d+)?)$/)) {
+            checkBDXValidity();
+        } else if (nabv_p.value == "") {
+            nabv_btn.disabled = true;
+            conditions.disabled = true;
+        } else {
+            nabv_btn.disabled = true;
+            conditions.disabled = true;
+        }
+    }
+
+    function checkBDXValidity() {
+        if ((nabv_x.value).match(/^[0-9]+(?:\.[0-9]+)?$/)) {
+            checkRange();
+        } else if (nabv_x.value == "") {
+            nabv_btn.disabled = true;
+            conditions.disabled = true;
+        } else {
+            nabv_btn.disabled = true;
+            conditions.disabled = true;
+        }
+    }
+
+    function checkRange() {
+        if (parseInt(nabv_x.value) <= parseInt(nabv_vals.value) && parseInt(nabv_vals.value) >= 0) {
+            conditions.disabled = false;
+            nabv_btn.disabled = false;
+        } else {
+            conditions.disabled = true;
+            nabv_btn.disabled = true;
+        }
+    }
+
+    nabv_vals.addEventListener("input", checkBDNValidity);
+    nabv_p.addEventListener("input", checkBDPValidity);
+    nabv_x.addEventListener("input", checkBDXValidity);
+</script>
+
+</html>

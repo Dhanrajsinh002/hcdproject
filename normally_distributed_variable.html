@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normally Distributed Variable</title>
+
+    <link rel="stylesheet" href="./css/normally_distributed_variable.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/normally_distributed_variable.js"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+<body class="bg-dark">
+    <div class="well bg-transparent border-0">
+
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th>
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">Normally Distributed Variable</div>
+                </th>
+            </tr>
+        
+            <tr>
+                <td>
+        
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <div class="d-inline-block">
+                                            <label class="fs-4" for="ndv_lbl">Enter <i><b>labels</b></i> here:- </label>
+                                            <textarea class="form-control fs-3 m-3" name="ndv_lbl" id="ndv_lbl" cols="30"
+                                                rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - 56-under 57, 57-under 58, 58-under 59" required></textarea>
+                                        </div>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <div class="d-inline-block">
+                                            <label class="fs-4" for="ndv_freq">Enter <i><b>frequency</b></i> values:- </label>
+                                            <textarea class="form-control fs-3 m-3" name="ndv_freq" id="ndv_freq" cols="30"
+                                                rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,0.9,-3,7,-4,1,5"
+                                                required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+        
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="ndv_btn" class="btn btn-primary m-lg-3 fs-4"
+                                            onclick="calculateNDV(document.getElementById('ndv_lbl').value,document.getElementById('ndv_freq').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+        
+                </td>
+            </tr>
+        
+            <tr>
+                <td>
+                    <table id="re_result" class="table table-bordered table-light table-hover table-striped text-center fs-3">
+                    </table>
+                </td>
+            </tr>
+        
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div id="comboPlot" class="w-100"></div>
+                    </div>
+                </td>
+            </tr>
+        
+        </table>
+
+    </div>
+</body>
+
+<script>
+    const ndv_lbl = document.getElementById("ndv_lbl");
+    const ndv_freq = document.getElementById("ndv_freq");
+    const ndv_btn = document.getElementById("ndv_btn");
+
+    if(ndv_lbl.value == "" || ndv_freq.value == "") {
+        ndv_btn.disabled = true;
+    }
+
+    function checkValidLbl() {
+        // will check valid String separated by comma && values which is only takes positive, decimal numbers separated by comma
+        // if((ndv_lbl.value).match(/^\s*[a-zA-Z-]*\d+(?:\.\d+)?(?:\s*,\s*[a-zA-Z-]*\d+(?:\.\d+)?)*\s*$/) 
+        if((ndv_lbl.value).match(/^[\w\s-]+(?:,[\w\s-]+)*$/)
+        && (ndv_freq.value).match(/^(?:\d+(?:\.\d+)?(?:\s*,\s*\d+(?:\.\d+)?)+|\d+(?:\.\d+)?)$/)) {
+            ndv_btn.disabled = false;
+            checkEqualLength();
+        } else if(ndv_lbl.value == "" || ndv_freq.value == "") {
+            ndv_btn.disabled = true;
+        } else {
+            ndv_btn.disabled = true;
+        }
+    }
+
+    function checkEqualLength() {
+        if( ((ndv_lbl.value).split(",")).length === ((ndv_freq.value).split(",")).length ) {
+            ndv_btn.disabled = false;
+        } else {
+            ndv_btn.disabled = true;
+        }
+    }
+
+    ndv_lbl.addEventListener("input",checkValidLbl)
+    ndv_freq.addEventListener("input",checkValidLbl)
+
+
+</script>
+
+
+</html>

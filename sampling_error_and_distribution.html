@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampling error & Distriution</title>
+
+    <link rel="stylesheet" href="./css/sampling_error_and_distribution.css">
+    <script src="./js/sampling_error_and_distribution.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+<body class="bg-dark">
+    
+    <div class="well bg-transparent border-0 text-center">
+    
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th>
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">Sampling error & Distribution</div>
+                </th>
+            </tr>
+    
+            <tr>
+                <td>
+    
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <div class="d-inline-block">
+                                            <label class="fs-4" for="sam_lbl">Enter Sample labels:- </label>
+                                            <textarea class="form-control fs-3 m-3" name="sam_lbl" id="sam_lbl" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - A,B,C,D,E"
+                                                required></textarea>
+                                        </div>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <div class="d-inline-block">
+                                            <label class="fs-4" for="sam_val">Enter Sample values:- </label>
+                                            <textarea class="form-control fs-3 m-3" name="sam_val" id="sam_val" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,0.9,-3,7,-4,1,5"
+                                                required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="sam_grps">Determine no. of groups :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" name="sam_grps" id="sam_grps" required>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="sam_btn" class="btn btn-primary m-lg-3 fs-4"
+                                            onclick="calculateRE(document.getElementById('sam_lbl').value, document.getElementById('sam_val').value, document.getElementById('sam_grps').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+    
+                </td>
+            </tr>
+    
+            <tr>
+                <td>
+                    <table id="sam_res"
+                        class="table table-bordered table-light table-hover table-striped text-center fs-3"></table>
+                </td>
+            </tr>
+    
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div id="samPlot" class="w-100"></div>
+                    </div>
+                </td>
+            </tr>
+    
+        </table>
+    </div>
+
+</body>
+
+<script>
+
+    const sam_lbl = document.getElementById("sam_lbl");
+    const sam_val = document.getElementById("sam_val");
+    const sam_grps = document.getElementById("sam_grps");
+    const sam_btn = document.getElementById("sam_btn");
+
+    if(sam_lbl.value == "" || sam_val.value == "" || sam_grps.value == "") {
+        sam_btn.disabled = true;
+    }
+
+    function checkValidSAM() {
+        if((sam_lbl.value).match(/^(?:\s*[a-zA-Z]+\s*)(?:,\s*[a-zA-Z]+\s*)*$/) 
+        && (sam_val.value).match(/^[-+]?\d*\.?\d+(?:,[-+]?\d*\.?\d+)*$/)) {
+            sam_btn.disabled = false;
+            checkValidSAMGRPS()
+            checkEqualLength()
+        } else if(sam_lbl.value == "") {
+            sam_btn.disabled = true;
+        } else {
+            sam_btn.disabled = true;
+        }
+    }
+
+    // function checkValidSAMVAL() {
+    //     if((sam_val.value).match(/^[-+]?\d*\.?\d+(?:,[-+]?\d*\.?\d+)*$/)) {
+    //         sam_btn.disabled = false;
+    //         checkEqualLength()
+    //     } else if(sam_val.value == "") {
+    //         sam_btn.disabled = true;
+    //     } else {
+    //         sam_btn.disabled = true;
+    //     }
+    // }
+    
+    function checkValidSAMGRPS() {
+        if((sam_grps.value).match(/^[0-9]+$/)) {
+            checkEqualLength()
+            // sam_btn.disabled = false;
+        } else if(sam_grps.value == "") {
+            sam_btn.disabled = true;
+        } else {
+            sam_btn.disabled = true;
+        }
+    }
+
+    function checkEqualLength() {
+        if (((sam_lbl.value).split(",")).length === ((sam_val.value).split(",")).length) {
+            if(sam_grps.value <= ((sam_lbl.value).split(",")).length && sam_grps.value > 0) {
+                sam_btn.disabled = false;
+                checkeDuplication();
+            }
+        } else {
+            sam_btn.disabled = true;
+        }
+    }
+    
+    // checks duplication of alphabate letters after each comma
+    function checkeDuplication() {
+        const regex = /^(?!.*\b(\w+)\b.*,\s*\b\1\b)[A-Za-z]+(?:,\s*[A-Za-z]+)*$/;
+        if (regex.test(sam_lbl.value)) {
+            sam_btn.disabled = false;
+        } else {
+            sam_btn.disabled = true;
+        }
+    }
+
+    sam_lbl.addEventListener("input",checkValidSAM);
+    sam_val.addEventListener("input",checkValidSAM);
+    sam_grps.addEventListener("input", checkValidSAMGRPS);
+
+</script>
+
+</html>
