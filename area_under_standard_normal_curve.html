@@ -118,7 +118,7 @@
 
     function checkValidZ0() {
         // it will check enter should be either positive or negative or positive decimal or negative decimal
-        if((z1_val.value).match(/^-?\d+(\.\d+)?$/)) {
+        if((z1_val.value).match(/^-?\d+(\.\d+)?$/) && (z1_val.value).match(/^-?\d\.\d+$/)) {
             z_btn.disabled = false;
         } else if(z1_val.value == "") {
             z_btn.disabled = true;
@@ -129,7 +129,7 @@
     
     function checkValidZ1() {
         // it will check enter should be either positive or negative or positive decimal or negative decimal
-        if ((z2_val.value).match(/^-?\d+(\.\d+)?$/)) {
+        if ((z2_val.value).match(/^-?\d+(\.\d+)?$/) && (z2_val.value).match(/^-?\d\.\d+$/)) {
             z_btn.disabled = false;
         } else if (z2_val.value == "") {
             z_btn.disabled = true;
