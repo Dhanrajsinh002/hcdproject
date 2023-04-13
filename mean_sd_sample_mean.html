@@ -31,33 +31,43 @@
                 <td>
     
                     <div class="d-flex align-items-center justify-content-center">
-                        <div class="well row mx-md-3 w-50">
+                        <div class="well row mx-md-3" style="width: 60%;">
                             <table style="margin: 0 auto; text-align: center; display: table;">
                                 <tr>
                                     <td style="width: 50%;">
                                         <div class="d-inline-block">
                                             <label class="fs-4" for="msdsm_lbl">Enter Sample labels:- </label>
-                                            <textarea class="form-control fs-3 m-3" name="msdsm_lbl" id="msdsm_lbl" cols="30"
+                                            <textarea style="resize: none;" class="form-control fs-3 m-3" name="msdsm_lbl" id="msdsm_lbl" cols="30"
                                                 rows="5"
                                                 placeholder="Enter your values here separated by comma (,)&#10;i.e. - A,B,C,D,E"
                                                 required></textarea>
                                         </div>
                                     </td>
+
                                     <td style="width: 50%;">
                                         <div class="d-inline-block">
                                             <label class="fs-4" for="msdsm_val">Enter Sample values:- </label>
-                                            <textarea class="form-control fs-3 m-3" name="msdsm_val" id="msdsm_val" cols="30"
+                                            <textarea style="resize: none;" class="form-control fs-3 m-3" name="msdsm_val" id="msdsm_val" cols="30"
                                                 rows="5"
                                                 placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,0.9,-3,7,-4,1,5"
                                                 required></textarea>
                                         </div>
                                     </td>
                                 </tr>
+
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="msdsm_grps">Sample Size :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" name="msdsm_grps" id="msdsm_grps" required>
+                                    </td>
+                                </tr>
     
                                 <tr>
                                     <td colspan="2">
                                         <button id="msdsm_btn" class="btn btn-primary m-lg-3 fs-4"
-                                            onclick="calculateRE(document.getElementById('msdsm_lbl').value, document.getElementById('msdsm_val').value)">Calculate</button>
+                                            onclick="calculateMSDSM(document.getElementById('msdsm_lbl').value, document.getElementById('msdsm_val').value, document.getElementById('msdsm_grps').value)">Calculate</button>
                                     </td>
                                 </tr>
                             </table>
@@ -91,16 +101,17 @@
 
     const msdsm_lbl = document.getElementById("msdsm_lbl");
     const msdsm_val = document.getElementById("msdsm_val");
+    const msdsm_grps = document.getElementById("msdsm_grps");
     const msdsm_btn = document.getElementById("msdsm_btn");
 
-    if (msdsm_lbl.value == "" || msdsm_val.value == "") {
+    if (msdsm_lbl.value == "" || msdsm_val.value == "" || msdsm_grps.value == "") {
         msdsm_btn.disabled = true;
     }
 
     function checkValidSAM() {
         if ((msdsm_lbl.value).match(/^(?:\s*[a-zA-Z]+\s*)(?:,\s*[a-zA-Z]+\s*)*$/)
             && (msdsm_val.value).match(/^[-+]?\d*\.?\d+(?:,[-+]?\d*\.?\d+)*$/)) {
-                msdsm_btn.disabled = false;
+                // msdsm_btn.disabled = false;
                 checkEqualLength()
         } else if (msdsm_lbl.value == "") {
             msdsm_btn.disabled = true;
@@ -120,17 +131,29 @@
     //     }
     // }
 
+    function checkSamSize() {
+        if((msdsm_grps.value).match(/^[0-9]+$/)) {
+            checkEqualLength()
+        } else if( msdsm_grps.value == "") {
+            msdsm_btn.disabled = true;
+        } else {
+            msdsm_btn.disabled = true;
+        }
+    }
+
     function checkEqualLength() {
         if (((msdsm_lbl.value).split(",")).length === ((msdsm_val.value).split(",")).length) {
-            msdsm_btn.disabled = false;
-            checkeDuplication();
+            if (msdsm_grps.value <= ((msdsm_lbl.value).split(",")).length && msdsm_grps.value > 0) {
+                msdsm_btn.disabled = false;
+                checkDuplication();
+            }
         } else {
             msdsm_btn.disabled = true;
         }
     }
 
     // checks duplication of alphabate letters after each comma
-    function checkeDuplication() {
+    function checkDuplication() {
         const regex = /^(?!.*\b(\w+)\b.*,\s*\b\1\b)[A-Za-z]+(?:,\s*[A-Za-z]+)*$/;
         if (regex.test(msdsm_lbl.value)) {
             msdsm_btn.disabled = false;
@@ -138,9 +161,10 @@
             msdsm_btn.disabled = true;
         }
     }
-
+    
     msdsm_lbl.addEventListener("input", checkValidSAM);
     msdsm_val.addEventListener("input", checkValidSAM);
+    msdsm_grps.addEventListener("input", checkSamSize)
 
 </script>
 

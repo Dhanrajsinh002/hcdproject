@@ -45,9 +45,8 @@
                                         </label>
                                     </td>
                                     <td>
-                                        <textarea class="form-control fs-3" cols="30" rows="5" id="npp_val" name="npp_val"
-                                            placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" minlength="5" maxlength="30"
-                                            required></textarea>
+                                        <textarea style="resize: none;" class="form-control fs-3" style="resize: none;" cols="30" rows="5" id="npp_val" name="npp_val"
+                                            placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6" required></textarea>
                                     </td>
                                 </tr>
                                 
@@ -68,14 +67,6 @@
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td>
-                                        <div class="w-100" id="nppScatter">
-                                            <!-- <canvas id="nppScatter" class="w-100"></canvas> -->
-                                        </div>
-                                    </td>
-                                </tr>
-
                             </table>
 
                         </div>
@@ -85,6 +76,22 @@
     
             </tr>
         </table>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center">
+
+        <div class="bg-transparent border-0 p-2 m-2" style="width: 40%;">
+            <table>
+                <tr>
+                    <td>
+                        <div id="nppScatter">
+                            <!-- <canvas id="nppScatter" class="w-100"></canvas> -->
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 
 </body>
@@ -102,8 +109,28 @@
         // it only allows postive, negative, positive decimal, negative decimal numbers
         if((npp_val.value).match(/^[+-]?\d+(?:\.\d+)?(?:\s*,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
             npp_btn.disabled = false;
+            checkLength();
         } else if(npp_val.value == "") {
             npp_btn.disabled = true;
+        } else {
+            npp_btn.disabled = true;
+        }
+    }
+    
+    function checkLength() {
+        if( ( (npp_val.value).split(",") ).length >= 5 && ((npp_val.value).split(",")).length <= 30 ) {
+            npp_btn.disabled = false;
+            checkDuplication();
+        } else {
+            npp_btn.disabled = true;
+        }
+    }
+
+    // checks duplication of alphabate letters after each comma
+    function checkDuplication() {
+        const regex = /^(?!.*\b(\w+)\b.*,\s*\b\1\b)[A-Za-z]+(?:,\s*[A-Za-z]+)*$/;
+        if (regex.test(npp_val.value)) {
+            npp_btn.disabled = false;
         } else {
             npp_btn.disabled = true;
         }

@@ -5,6 +5,8 @@ session_start();
 $bd_n = 0;
 $bd_p = 0;
 $bd_x = 0;
+$mean = 0;
+$sd = 0;
 $bd_o = "";
 
 if( (isset($_POST["bd_n"])) && ($_POST["bd_p"]) && (isset($_POST["bd_x"])) && (isset($_POST["bd_o"]))) {
@@ -33,7 +35,7 @@ if( (isset($_POST["bd_n"])) && ($_POST["bd_p"]) && (isset($_POST["bd_x"])) && (i
 }
 
 function binomialCoef($nume, $val, $flag) {
-    global $bd_n, $bd_x;
+    global $bd_n, $bd_x, $bd_p, $mean, $sd;
     
     $nume_facto = 1;
     $deno_facto = 1;
@@ -56,6 +58,12 @@ function binomialCoef($nume, $val, $flag) {
     for($i = $deno_init; $i > 0; $i--) {
         $deno_facto *= $i;
     }
+
+    // find mean
+    $mean = $bd_n * $bd_p;
+
+    // find stadard deviation
+    $sd = sqrt( $bd_n * ($bd_p * (1 - $bd_p)) );
 
     binomialProbability($nume_facto / $deno_facto);
 }

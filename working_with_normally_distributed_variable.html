@@ -43,7 +43,7 @@
                                     </td>
                                     <td style="width: 50%;">
                                         <input class="form-control fs-3 m-3" type="text" id="mean_val" name="mean_val"
-                                            required>
+                                            placeholder="i.e. 100" required>
                                     </td>
                                 </tr>
 
@@ -53,7 +53,17 @@
                                     </td>
                                     <td style="width: 50%;">
                                         <input class="form-control fs-3 m-3" type="text" id="sd_val" name="sd_val"
-                                            required>
+                                            placeholder="i.e. 16" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="p_val">Determine <i><b>P</b></i></label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="p_val" name="p_val" 
+                                            placeholder="i.e. 25" required>
                                     </td>
                                 </tr>
 
@@ -70,7 +80,7 @@
                                     </td>
                                     <td style="width: 50%;">
                                         <button id="z_btn" class="btn btn-primary m-lg-3 fs-4"
-                                            onclick="calculatePD(document.getElementById('mean_val').value,document.getElementById('sd_val').value,document.getElementById('conditions').value)">Calculate</button>
+                                            onclick="calculateNDV(document.getElementById('mean_val').value,document.getElementById('sd_val').value,document.getElementById('p_val').value,document.getElementById('conditions').value)">Calculate</button>
                                     </td>
                                 </tr>
 
@@ -99,50 +109,30 @@
 
     const mean_val = document.getElementById("mean_val");
     const sd_val = document.getElementById("sd_val");
+    const p_val = document.getElementById("p_val");
     const z_btn = document.getElementById("z_btn");
-    // const conditions = document.getElementById("conditions");
 
-    if (mean_val.value == "" || sd_val.value == "") {
+    if (mean_val.value == "" || sd_val.value == "" || p_val.value == "") {
         z_btn.disabled = true;
     }
 
-    // function toggleInput() {
-    //     if (conditions.value === "between_of" || conditions.value === "outside_of") {
-    //         z2_val.disabled = false;
-    //         z2_val.setAttribute("required", "");
-    //         checkValidZ1();
-    //     } else {
-    //         z2_val.disabled = true;
-    //         z2_val.removeAttribute("required", "");
-    //         checkValidZ0();
-    //     }
-    // }
-
     function checkValidZ() {
         // it will check enter should be either positive or negative or positive decimal or negative decimal
+        // and for p_val should be decimal values between 0 to 100
         if ((mean_val.value).match(/^-?\d+(\.\d+)?$/) 
-        && (sd_val.value).match(/^-?\d+(\.\d+)?$/)) {
+        && (sd_val.value).match(/^-?\d+(\.\d+)?$/)
+        && (p_val.value).match(/^100(\.0{1,2})?$|^(\d|[1-9]\d|99)(\.\d{1,2})?$/)) {
             z_btn.disabled = false;
-        } else if (mean_val.value == "") {
+        } else if (mean_val.value == "" || sd_val.value == "" || p_val.value == "") {
             z_btn.disabled = true;
         } else {
             z_btn.disabled = true;
         }
     }
 
-    // function checkValidZ1() {
-    //     // it will check enter should be either positive or negative or positive decimal or negative decimal
-    //     if ((sd_val.value).match(/^-?\d+(\.\d+)?$/)) {
-    //         z_btn.disabled = false;
-    //     } else if (sd_val.value == "") {
-    //         z_btn.disabled = true;
-    //     } else {
-    //         z_btn.disabled = true;
-    //     }
-    // }
-
     mean_val.addEventListener("input", checkValidZ);
     sd_val.addEventListener("input", checkValidZ);
+    p_val.addEventListener("input", checkValidZ);
 </script>
 
 </html>

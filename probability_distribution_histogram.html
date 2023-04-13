@@ -52,7 +52,7 @@
                                         <tr>
                                             <td>
                                                 <div class="d-inline-block">
-                                                    <textarea class="form-control fs-3" cols="30" rows="5" id="pdh_val" name="pdh_val" placeholder="Enter Comma(,) separated values&#10;i.e. A,B,C,D,F,E,A,C,B" required></textarea>
+                                                    <textarea style="resize: none;" class="form-control fs-3" cols="30" rows="5" id="pdh_val" name="pdh_val" placeholder="Enter Comma(,) separated values&#10;i.e. A,B,C,D,F,E,A,C,B" required></textarea>
                                                 </div>
                                             </td>
                                         </tr>
@@ -86,14 +86,14 @@
                                 <tr>
                                     <td>
                                         <div class="d-inline-block">
-                                            <textarea class="form-control fs-3" cols="30" rows="5" id="pdh_lable" name="pdh_lable"
+                                            <textarea style="resize: none;" class="form-control fs-3" cols="30" rows="5" id="pdh_lable" name="pdh_lable"
                                                 placeholder="Enter your labels here separated by Comma(,)&#10;i.e. 0,1,2,3,4,5" required></textarea>
                                         </div>
                                     </td>
         
                                     <td>
                                         <div class="d-inline-block">
-                                            <textarea class="form-control fs-3" cols="30" rows="5" id="pdh_lbl_val" name="pdh_lbl_val"
+                                            <textarea style="resize: none;" class="form-control fs-3" cols="30" rows="5" id="pdh_lbl_val" name="pdh_lbl_val"
                                                 placeholder="Enter your values here separated by Comma(,)&#10;i.e. 25,5,3,10,11,1" required></textarea>
                                         </div>
                                     </td>
@@ -198,7 +198,7 @@
             && (pdh_m2_txt1.value).match(/^(\d+\s*,\s*)*\d+$/) ) ) {
                 pdh_btn2.disabled = false;
                 checkEqualLength();
-                // checkeDuplication();
+                // checkDuplication();
             } else {
                 pdh_btn2.disabled = true;
             }
@@ -207,13 +207,14 @@
         function checkEqualLength() {
             if( ((pdh_m2_txt0.value).split(",")).length === ((pdh_m2_txt1.value).split(",")).length) {
                 pdh_btn2.disabled = false;
-                checkeDuplication();
+                checkDuplication();
             } else {
                 pdh_btn2.disabled = true;
             }
         };
 
-        function checkeDuplication() {
+        // checks duplication of positive numbers after each comma
+        function checkDuplication() {
             const regex = /^(?!.*\b(\w+)\b.*,\s*\b\1\b)[0-9]+(?:,\s*[0-9]+)*$/;
             if(regex.test(pdh_m2_txt0.value)) {
                 pdh_btn2.disabled = false;

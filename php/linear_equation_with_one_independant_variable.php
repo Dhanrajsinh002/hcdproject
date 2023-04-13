@@ -12,19 +12,19 @@ if( isset($_POST['Intercept']) && isset($_POST['Slop']) ) {
         for($i = 0; $i <= 10; $i++) {
             // array_push($dataPoints, [ strval ($_POST['Intercept'] + ($_POST['Slop'] * $i) ), $i]);
             // $dataPoints[$_POST['Intercept'] + $_POST['Slop']] = $i;
-            array_push($dataPoints, array("y" => $_POST['Intercept'] + ($_POST['Slop'] * $i), "label" => $i) );
+            array_push($dataPoints, array("y" => $_POST['Intercept'] + ($_POST['Slop'] * $i), "x" => $i) );
         }
     } else if($_POST['Slop'] < 0) {
         for($i = 0; $i <= 10; $i++) {
             // array_push($dataPoints, [ strval ($_POST['Intercept'] - ($_POST['Slop'] * $i) ), $i]);
             // $dataPoints[$_POST['Intercept'] - abs($_POST['Slop'])] = $i;
-            array_push($dataPoints, array("y" => $_POST['Intercept'] + ($_POST['Slop'] * $i), "label" => $i) );
+            array_push($dataPoints, array("y" => $_POST['Intercept'] + ($_POST['Slop'] * $i), "x" => $i) );
         }
     } else {
         for($i = 0; $i <= 10; $i++) {
             // array_push($dataPoints, [ strval ($_POST['Intercept'] + $_POST['Slop'], $i) ]);
             // $dataPoints[$_POST['Intercept']] = $i;
-            array_push($dataPoints, array("y" => $_POST['Intercept'] + $_POST['Slop'], "label" => $i) );
+            array_push($dataPoints, array("y" => $_POST['Intercept'] + $_POST['Slop'], "x" => $i) );
         }
     }
 

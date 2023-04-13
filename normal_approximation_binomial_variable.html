@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binomial Distribution</title>
+    <title>Normal Approximation Binomial Variable</title>
     <link rel="stylesheet" href="./css/normal_approximation_binomial_variable.css">
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -39,10 +39,10 @@
                             <table style="margin: 0 auto; text-align: center; display: table;">
                                 <tr style="width: 50%;">
                                     <td style="width: 50%;">
-                                        <label class="fs-4" for="nabv_vals">Determine <i><b>n</b></i> no. of trials:-</label>
+                                        <label class="fs-4" for="nabv_n">Determine <i><b>n</b></i> no. of trials:-</label>
                                     </td>
                                     <td style="width: 50%;">
-                                        <input type="text" class="form-control fs-3 m-3" name="nabv_vals" id="nabv_vals" required/>
+                                        <input type="text" class="form-control fs-3 m-3" name="nabv_n" id="nabv_n" required/>
                                     </td>
                                 </tr>
 
@@ -73,11 +73,12 @@
                                             <option value="equal">P(X = x) = </option>
                                             <option value="less_equal">P(X ≤ x) =</option>
                                             <option value="greter_equal">P(X ≥ x) =</option>
+                                            <option value="all">All</option>
                                         </select>
                                     </td>
                                     <td style="width: 50%;">
                                         <button id="nabv_btn" class="btn btn-primary m-lg-3 fs-4"
-                                            onclick="calculateBinomialProbability(document.getElementById('nabv_vals').value,document.getElementById('nabv_p').value,document.getElementById('nabv_x').value,document.getElementById('conditions').value)">Calculate</button>
+                                            onclick="calculateNABV(document.getElementById('nabv_n').value,document.getElementById('nabv_p').value,document.getElementById('nabv_x').value,document.getElementById('conditions').value)">Calculate</button>
                                     </td>
                                 </tr>
 
@@ -106,24 +107,24 @@
 
 <script>
 
-    const nabv_vals = document.getElementById("nabv_vals");
+    const nabv_n = document.getElementById("nabv_n");
     const nabv_p = document.getElementById("nabv_p");
     const nabv_x = document.getElementById("nabv_x");
     const conditions = document.getElementById("conditions");
     const nabv_btn = document.getElementById("nabv_btn");
 
-    if (nabv_vals.value == "" || nabv_p.value == "" || nabv_x.value == "") {
+    if (nabv_n.value == "" || nabv_p.value == "" || nabv_x.value == "") {
         nabv_btn.disabled = true;
         nabv_x.disabled = true;
         conditions.disabled = true;
     }
 
     function checkBDNValidity() {
-        if ((nabv_vals.value).match(/^[0-9]+(?:\.[0-9]+)?$/)) {
-            bd_x.disabled = false;
+        if ((nabv_n.value).match(/^[0-9]+(?:\.[0-9]+)?$/)) {
+            nabv_x.disabled = false;
             conditions.disabled = false;
             checkBDPValidity();
-        } else if (nabv_vals.value == "") {
+        } else if (nabv_n.value == "") {
             nabv_btn.disabled = true;
             nabv_x.disabled = true;
             conditions.disabled = true;
@@ -159,7 +160,7 @@
     }
 
     function checkRange() {
-        if (parseInt(nabv_x.value) <= parseInt(nabv_vals.value) && parseInt(nabv_vals.value) >= 0) {
+        if (parseInt(nabv_x.value) <= parseInt(nabv_n.value) && parseInt(nabv_n.value) >= 0) {
             conditions.disabled = false;
             nabv_btn.disabled = false;
         } else {
@@ -168,7 +169,7 @@
         }
     }
 
-    nabv_vals.addEventListener("input", checkBDNValidity);
+    nabv_n.addEventListener("input", checkBDNValidity);
     nabv_p.addEventListener("input", checkBDPValidity);
     nabv_x.addEventListener("input", checkBDXValidity);
 </script>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Population Mean When &sigma; is Known</title>
+    <link rel="stylesheet" href="./css/mean_discrete_binomial_variable.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/sampling_distribution_of_sample_mean_calc.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body class="bg-dark">
+
+    <div class="well bg-transparent border-0 text-center">
+
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th colspan="2">
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">One Population Mean When &sigma; is Known</div>
+                </th>
+            </tr>
+
+            <tr>
+                <td>
+
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+
+                            <table style="margin: 0 auto; text-align: left; display: table;">
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="opmks_nh_val">Determine Null Hypothesis
+                                            <i><b>H<sub>0</sub></b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="opmks_nh_val"
+                                            name="opmks_nh_val" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="opmks_ah_val">Determine Alternate Hypothesis
+                                            <i><b>H<sub>1</sub></b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="opmks_ah_val"
+                                            name="opmks_ah_val" disabled>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="opmks_pm_val">Determine Population Mean
+                                            <i><b>&#xb5;</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="opmks_pm_val"
+                                            name="opmks_pm_val" disabled>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="opmks_sl_val">Determine Significance Level
+                                            <i><b>&alpha;</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="opmks_sl_val"
+                                            name="opmks_sl_val" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="opmks_sm_val">Determine Sample Mean <i><b>x&#772</b></i>
+                                            :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="opmks_sm_val"
+                                            name="opmks_sm_val" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="opmks_sd_val">Determine Stadard Deviation
+                                            <i><b>&sigma;</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="opmks_sd_val"
+                                            name="opmks_sd_val" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="opmks_ss_val">Determine Sample Size <i><b>n</b></i>
+                                            :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-3" type="text" id="opmks_ss_val"
+                                            name="opmks_ss_val" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="text-align: center;">
+                                        <select class="form-select-sm fs-3" oninput="toggleInput()" name="conditions"
+                                            id="conditions">
+                                            <option value="both_tail">H1 &#8800; &#xb5;</option>
+                                            <option value="left_tail">H1 &#8826; &#xb5;</option>
+                                            <option value="right_tail">H1 &#8827; &#xb5;</option>
+                                        </select>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <button id="opmks_btn" class="btn btn-primary m-lg-3 fs-4" onclick="calculateSDSM(
+                                                document.getElementById('opmks_nh_val').value, 
+                                                // document.getElementById('opmks_pm_val').value, 
+                                                document.getElementById('opmks_sl_val').value, 
+                                                document.getElementById('opmks_sm_val').value, 
+                                                document.getElementById('opmks_sd_val').value, 
+                                                document.getElementById('opmks_ss_val').value, 
+                                                document.getElementById('conditions').value)">Calculate</button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <table id="sdsm_res"
+                                            class="table table-bordered table-light table-hover table-striped text-center fs-3">
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</body>
+
+<script>
+    const opmks_nh_val = document.getElementById("opmks_nh_val");
+    const opmks_ah_val = document.getElementById("opmks_ah_val");
+    const opmks_pm_val = document.getElementById("opmks_pm_val");
+    const opmks_sl_val = document.getElementById("opmks_sl_val");
+    const opmks_sm_val = document.getElementById("opmks_sm_val");
+    const opmks_sd_val = document.getElementById("opmks_sd_val");
+    const opmks_ss_val = document.getElementById("opmks_ss_val");
+    const conditions = document.getElementById("conditions");
+    const opmks_btn = document.getElementById("opmks_btn");
+
+    if (opmks_nh_val.value == "" || opmks_sl_val.value == "" || opmks_sm_val.value == "" || opmks_sd_val.value == "" || opmks_ss_val.value == "") {
+        opmks_btn.disabled = true;
+    }
+
+    // allows only positive and positive decimal values
+    function checkValidity() {
+        if ((opmks_nh_val.value).match(/^\d+(\.\d+)?$/) &&
+            (opmks_sl_val.value).match(/^[0-9]+$/) &&
+            (opmks_sm_val.value).match(/^\d+(\.\d+)?$/) &&
+            (opmks_sd_val.value).match(/^\d+(\.\d+)?$/) &&
+            (opmks_ss_val.value).match(/^[0-9]+$/)) {
+            // checkPValidity();
+            opmks_btn.disabled = false;
+        } else if (opmks_nh_val.value == "" || opmks_sl_val.value == "" || opmks_sm_val.value == "" || opmks_sd_val.value == "" || opmks_ss_val.value == "") {
+            opmks_btn.disabled = true;
+        } else {
+            opmks_btn.disabled = true;
+        }
+    }
+
+    opmks_nh_val.addEventListener("input", checkValidity);
+    opmks_pm_val.addEventListener("input", checkValidity);
+    opmks_sl_val.addEventListener("input", checkValidity);
+    opmks_sm_val.addEventListener("input", checkValidity);
+    opmks_sd_val.addEventListener("input", checkValidity);
+    opmks_ss_val.addEventListener("input", checkValidity);
+</script>
+
+</html>

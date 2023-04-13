@@ -11,6 +11,7 @@ function calculateMethod1(textarea0_value) {
         data: {m1_data : textarea0_value}
     }).done(function (response) {
         $("#result").html(response);
+        // console.log(response);
     })
 }
 

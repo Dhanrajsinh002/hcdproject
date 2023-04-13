@@ -4,6 +4,7 @@ session_start();
 // graph array
 
 $datapoints = array();
+$dotPlotDataPoints = array();
 
 // grpah plotting function
 
@@ -32,7 +33,7 @@ if (isset($_POST["m2_label"]) && isset($_POST["m2_data"])) {
 function findResultOfMethod1($arr)
 {
 
-    global $datapoints;
+    global $datapoints, $dotPlotDataPoints;
 
     // for finding frequencies
 
@@ -73,12 +74,23 @@ function findResultOfMethod1($arr)
     }
 
     for ($i = 0; $i < count($m1rel_freqs); $i++) {
-        array_push($datapoints, array("y" => $m1rel_freqs[$i], "label" => (string)$m1label[$i]));
+        array_push($datapoints, array("y" => $m1rel_freqs[$i], "x" => (string)$m1label[$i]));
+    }
+
+    // for Dotplot array
+    foreach ($rel_arr as $key => $value) {
+        // echo $key ." => ". $value . "\n";
+        for ($i = 1; $i <= $value; $i++) {
+            array_push($dotPlotDataPoints, (object) array("y" => $i, "x" => ord($key)));
+        }
     }
 
     // returning for frequency and relative frequency tables
 
-    // return array($m1label, $m1freqs, $m1rel_freqs);
+    // print_r($rel_arr);
+    // print_r($m1rel_freqs);
+    // print_r($dotPlotDataPoints);
+    // exit(0);
 
     echo "<thead class='thead-dark'>
                 <tr>
@@ -100,13 +112,16 @@ function findResultOfMethod1($arr)
 
     echo plotBarGraph($datapoints);
     echo plotPieGraph($datapoints);
-    echo plotScatterGraph($datapoints);
-    // echo json_encode($datapoints, JSON_NUMERIC_CHECK);
+    echo plotDotGraph($dotPlotDataPoints);
+    // exit(0);
 }
+
+
+
 
 function findResultOfMethod2($lbl, $val)
 {
-    global $datapoints;
+    global $datapoints, $dotPlotDataPoints;
     $sum = 0;
     for ($i = 0; $i < count($val); $i++) {
         $sum += $val[$i];
@@ -118,7 +133,7 @@ function findResultOfMethod2($lbl, $val)
     }
 
     for ($i = 0; $i < count($m2rel_freqs); $i++) {
-        array_push($datapoints, array("y" => $m2rel_freqs[$i], "label" => (string)$lbl[$i]));
+        array_push($datapoints, array("y" => $m2rel_freqs[$i], "x" => (string)$lbl[$i]));
     }
 
     echo "<thead class='thead-dark'>
@@ -140,7 +155,7 @@ function findResultOfMethod2($lbl, $val)
 
     echo plotBarGraph($datapoints);
     echo plotPieGraph($datapoints);
-    echo plotScatterGraph($datapoints);
+    // return plotDotGraph($dotPlotDataPoints);
 }
 
 function plotBarGraph($datapoints)
@@ -200,33 +215,39 @@ function plotPieGraph($datapoints)
 <?php
 }
 
-function plotScatterGraph($datapoints)
+function plotDotGraph($datapoints)
 {
 ?>
     <script>
+        function compareDataPointXAscend(dataPoint1, dataPoint2) {
+            return dataPoint1.label - dataPoint2.label;
+        }
+
         var chart = new CanvasJS.Chart("dotPlot", {
             animationEnabled: true,
-            exportEnabled: true,
             theme: "light1",
             title: {
                 text: "Dot Plot"
             },
             axisX: {
-                title: "Weight",
-                suffix: " kg"
+                title: "Sample Mean",
+                interval: 1
             },
             axisY: {
-                title: "Height",
-                suffix: " inch"
+                title: "Frequency",
+                interval: 1
             },
             data: [{
                 type: "scatter",
                 markerType: "circle",
-                markerSize: 10,
-                toolTipContent: "Height: {y} inch<br>Weight: {x} kg",
+                markerSize: 20,
+                toolTipContent: "Freq. : {y} <br>Label : {x} ",
                 dataPoints: <?php echo json_encode($datapoints, JSON_NUMERIC_CHECK); ?>
             }]
         });
+
+        chart.options.data[0].dataPoints.sort(compareDataPointXAscend);
+
         chart.render();
     </script>
 <?php

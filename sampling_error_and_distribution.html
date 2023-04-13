@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="./css/sampling_error_and_distribution.css">
     <script src="./js/sampling_error_and_distribution.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="https://www.canvasxpress.org/dist/canvasXpress.css" type="text/css" />
+    <script src="https://www.canvasxpress.org/canvasXpress.min.js"></script> -->
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -31,20 +37,20 @@
                 <td>
     
                     <div class="d-flex align-items-center justify-content-center">
-                        <div class="well row mx-md-3 w-50">
+                        <div class="well row mx-md-3" style="width: 60%;">
                             <table style="margin: 0 auto; text-align: center; display: table;">
                                 <tr>
                                     <td style="width: 50%;">
                                         <div class="d-inline-block">
                                             <label class="fs-4" for="sam_lbl">Enter Sample labels:- </label>
-                                            <textarea class="form-control fs-3 m-3" name="sam_lbl" id="sam_lbl" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - A,B,C,D,E"
+                                            <textarea style="resize: none;" class="form-control fs-3 m-3" name="sam_lbl" id="sam_lbl" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - A,B,C,D,E"
                                                 required></textarea>
                                         </div>
                                     </td>
                                     <td style="width: 50%;">
                                         <div class="d-inline-block">
                                             <label class="fs-4" for="sam_val">Enter Sample values:- </label>
-                                            <textarea class="form-control fs-3 m-3" name="sam_val" id="sam_val" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,0.9,-3,7,-4,1,5"
+                                            <textarea style="resize: none;" class="form-control fs-3 m-3" name="sam_val" id="sam_val" cols="30" rows="5" placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,0.9,-3,7,-4,1,5"
                                                 required></textarea>
                                         </div>
                                     </td>
@@ -52,7 +58,7 @@
 
                                 <tr>
                                     <td style="width: 50%;">
-                                        <label class="fs-4" for="sam_grps">Determine no. of groups :-</label>
+                                        <label class="fs-4" for="sam_grps">Sample Size :-</label>
                                     </td>
                                     <td style="width: 50%;">
                                         <input class="form-control fs-3 m-3" type="text" name="sam_grps" id="sam_grps" required>
@@ -62,7 +68,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <button id="sam_btn" class="btn btn-primary m-lg-3 fs-4"
-                                            onclick="calculateRE(document.getElementById('sam_lbl').value, document.getElementById('sam_val').value, document.getElementById('sam_grps').value)">Calculate</button>
+                                            onclick="calculateSEAD(document.getElementById('sam_lbl').value, document.getElementById('sam_val').value, document.getElementById('sam_grps').value)">Calculate</button>
                                     </td>
                                 </tr>
                             </table>
@@ -74,7 +80,7 @@
     
             <tr>
                 <td>
-                    <table id="sam_res"
+                    <table id="sed_res"
                         class="table table-bordered table-light table-hover table-striped text-center fs-3"></table>
                 </td>
             </tr>
@@ -82,7 +88,8 @@
             <tr>
                 <td>
                     <div class="d-flex align-items-center justify-content-center">
-                        <div id="samPlot" class="w-100"></div>
+                        <!-- <canvas id="sedDot" class="w-100"></canvas> -->
+                        <div id="sedDot" class="w-100"></div>
                     </div>
                 </td>
             </tr>
@@ -142,7 +149,7 @@
         if (((sam_lbl.value).split(",")).length === ((sam_val.value).split(",")).length) {
             if(sam_grps.value <= ((sam_lbl.value).split(",")).length && sam_grps.value > 0) {
                 sam_btn.disabled = false;
-                checkeDuplication();
+                checkDuplication();
             }
         } else {
             sam_btn.disabled = true;
@@ -150,7 +157,7 @@
     }
     
     // checks duplication of alphabate letters after each comma
-    function checkeDuplication() {
+    function checkDuplication() {
         const regex = /^(?!.*\b(\w+)\b.*,\s*\b\1\b)[A-Za-z]+(?:,\s*[A-Za-z]+)*$/;
         if (regex.test(sam_lbl.value)) {
             sam_btn.disabled = false;

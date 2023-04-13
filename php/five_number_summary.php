@@ -53,7 +53,7 @@ if(isset($_POST["fns_val"])) {
                 </tr>
             </tbody>";
 
-    array_push($datapoints, array("label" => "Boxplot", "y" => array( min($arr), $Q1, $Q2, $Q3, max($arr) )));
+    array_push($datapoints, array("x" => "Boxplot", "y" => array( min($arr), $Q1, $Q2, $Q3, max($arr) )));
 
     return boxPlots($datapoints);
 }

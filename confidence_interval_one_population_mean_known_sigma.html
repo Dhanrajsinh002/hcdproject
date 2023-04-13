@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confidence Interval for One Population Mean where σ is Known</title>
+    <link rel="stylesheet" href="./css/confidence_interval_one_population_mean_known_sigma.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/confidence_interval_one_population_mean_known_sigma.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+</head>
+
+<body class="bg-dark">
+
+    <div class="well bg-transparent border-0">
+    
+        <table style="text-align: center; width: 100%;" id="mainTableGraphs">
+            <tr>
+                <th colspan="2" align="center">
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1 ">Confidence Interval One Population Mean When &sigma; is Known</div>
+                </th>
+            </tr>
+    
+            <tr style="width: 50%;">
+                <td style="width: 50%;">
+                    <div class="well well-sm row mx-md-3 ">
+                        <input type="radio" name="rbtn" id="r1" value="r1" />
+                        <label for="r1" class="fs-4">Method 1</label>
+                    </div>
+                </td>
+    
+                <td style="width: 50%;">
+                    <div class="well well-sm row mx-md-3 ">
+                        <input type="radio" name="rbtn" id="r2" value="r2" />
+                        <label for="r2" class="fs-4">Method 2</label>
+                    </div>
+                </td>
+            </tr>
+    
+            <tr>
+    
+                <td style="width: 50%;">
+                    <div class="well row mx-md-3 p-lg-5">
+    
+                        <fieldset id="f1">
+                            <table style="text-align: center; width: 100%;">
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="ciopmks_sm_val">Determine Sample Mean <i><b>x&#772</b></i>
+                                            :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-4" type="text" id="ciopmks_sm_val" name="ciopmks_sm_val"
+                                            required>
+                                    </td>
+                                </tr>
+    
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="ciopmks_n_val">Determine Sample Size <i><b>n</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-4" type="text" id="ciopmks_n_val" name="ciopmks_n_val"
+                                            required>
+                                    </td>
+                                </tr>
+    
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="ciopmks_psd_val">Determine Population Standard Deviation
+                                            <i><b>&sigma;</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-4" type="text" id="ciopmks_psd_val" name="ciopmks_psd_val"
+                                            required>
+                                    </td>
+                                </tr>
+    
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="ciopmks_ci_val">Determine Confidence Level
+                                            <i><b>&alpha;</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-4" type="text" id="ciopmks_ci_val" name="ciopmks_ci_val"
+                                            required>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <td colspan="2">
+                                        <button class="btn btn-primary m-lg-4 fs-4" id="ciopmks_btn"
+                                            onclick="calculateCIOPMKSM1(document.getElementById('ciopmks_sm_val').value, document.getElementById('ciopmks_n_val').value, document.getElementById('ciopmks_psd_val').value, document.getElementById('ciopmks_ci_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+    
+                            </table>
+                        </fieldset>
+                        <!-- </form> -->
+                    </div>
+                </td>
+    
+                <td style="width: 50%;">
+                    <div class="well row mx-md-3">
+                        <!-- <form> -->
+                        <fieldset id="f2">
+                            <table style="text-align: center; width: 100%">
+                                <tr>
+                                    <td>
+                                        <label for="ciopmsk_m2_val" class="fs-4">Enter Your Values </label>
+                                    </td>
+                                    <td>
+                                        <textarea style="resize: none;" class="form-control fs-3 m-lg-2" cols="30" rows="5"
+                                            id="ciopmsk_m2_val" name="ciopmsk_m2_val"
+                                            placeholder="Enter Comma(,) separated values&#10;i.e. - 5,0,6.10,-8,6"
+                                            required></textarea>
+                                    </td>
+                                </tr>
+    
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="ciopmsk_m2_psd_val">Determine Population <br> Standard Deviation
+                                            <i><b>&sigma;</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3  m-lg-2" type="text" id="ciopmsk_m2_psd_val"
+                                            name="ciopmsk_m2_psd_val" required>
+                                    </td>
+                                </tr>
+
+                                <tr style="width: 50%;">
+                                    <td style="width: 50%;">
+                                        <label class="fs-4" for="ciopmsk_m2_ci_val">Determine Confidence Interval <i><b>&alpha;</b></i> :-</label>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <input class="form-control fs-3 m-lg-2" type="text" id="ciopmsk_m2_ci_val" name="ciopmsk_m2_ci_val" required>
+                                    </td>
+                                </tr>
+    
+                                <tr>
+                                    <td colspan="2">
+                                        <button class="btn btn-primary m-lg-5 fs-4" id="ciopmks_btn1"
+                                            onclick="calculateCIOPMKSM2(document.getElementById('ciopmsk_m2_val').value, document.getElementById('ciopmsk_m2_psd_val').value, document.getElementById('ciopmsk_m2_ci_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </fieldset>
+                        <!-- </form> -->
+                    </div>
+                </td>
+    
+            </tr>
+    
+            <tr>
+                <td colspan="2">
+                    <div class="panel panel-default">
+                        <table
+                            class="border border-3 rounded-pill table table-bordered table-hover table-light table-striped text-center fs-3"
+                            id="result"></table>
+                    </div>
+                </td>
+            </tr>
+    
+        </table>
+    </div>
+
+</body>
+
+<script>
+
+    const ciopmks_sm_val = document.getElementById("ciopmks_sm_val");
+    const ciopmks_n_val = document.getElementById("ciopmks_n_val");
+    const ciopmks_psd_val = document.getElementById("ciopmks_psd_val");
+    const ciopmks_ci_val = document.getElementById("ciopmks_ci_val");
+    const ciopmsk_m2_val = document.getElementById("ciopmsk_m2_val");
+    const ciopmsk_m2_psd_val = document.getElementById("ciopmsk_m2_psd_val");
+    const ciopmsk_m2_ci_val = document.getElementById("ciopmsk_m2_ci_val");
+    const ciopmks_btn = document.getElementById("ciopmks_btn");
+    const ciopmks_btn1 = document.getElementById("ciopmks_btn1");
+
+    $(document).ready(function () {
+        $("#f2").prop("disabled", true);
+        $("#r1").prop("checked", true);
+        $("input:radio").click(function () {
+            if ($(this).val() == "r1") {
+                $("#f1").prop("disabled", false);
+                $("#f2").prop("disabled", true);
+            } else {
+                $("#f1").prop("disabled", true);
+                $("#f2").prop("disabled", false);
+            }
+        });
+    });
+
+    if (ciopmks_sm_val.value == "" || ciopmks_n_val.value == "" || ciopmks_psd_val.value == "" || ciopmks_ci_val.value == "") {
+        ciopmks_btn.disabled = true;
+    }
+
+    if(ciopmsk_m2_val.value == "" || ciopmsk_m2_ci_val.value == "" || ciopmsk_m2_psd_val.value == "") {
+        ciopmks_btn1.disabled = true;
+    }
+
+    // allows only positive and positive decimal values
+    // allows only positive values
+    // allows only positive and positive decimal values
+    // allows only positive and decima number between 0 to 100
+    function isValidInputForMethod1() {
+        if ((ciopmks_sm_val.value).match(/^\d+(\.\d+)?$/)
+            && (ciopmks_n_val.value).match(/^[0-9]+$/)
+            && (ciopmks_psd_val.value).match(/^\d+(\.\d+)?$/)
+            && (ciopmks_ci_val.value).match(/^(\d{1,2}(\.\d+)?|100(\.0+)?)$/)) {
+                ciopmks_btn.disabled = false;
+        } else if (ciopmks_sm_val.value == "" || ciopmks_n_val.value == "" || ciopmks_psd_val.value == "" || ciopmks_ci_val.value == "") {
+            // val.setCustomValidity("Empty Input");
+            ciopmks_btn.disabled = true;
+        } else {
+            // ciopmks_sm_val.setCustomValidity("allows only alphabet letters");
+            ciopmks_btn.disabled = true;
+        }
+    }
+
+    // alloes only positive or decimal number separated by comma there may be spaces after and before comma
+    // allows only positive and positive decimal values
+    function isValidInputForMethod2() {
+        if ((ciopmsk_m2_val.value).match(/^\d+(\.\d+)?(\s*,\s*\d+(\.\d+)?)*$/)
+            && (ciopmsk_m2_ci_val.value).match(/^(\d{1,2}(\.\d+)?|100(\.0+)?)$/)
+            && (ciopmsk_m2_psd_val.value).match(/^\d+(\.\d+)?$/)) {
+            ciopmks_btn1.disabled = false;
+        } else if (ciopmsk_m2_val.value == "" || ciopmsk_m2_ci_val.value == "" || ciopmsk_m2_psd_val.value == "") {
+            ciopmks_btn1.disabled = true;
+        } else {
+            ciopmks_btn1.disabled = true;
+        }
+    }
+
+    // var answer = Math.abs(jStat.normal.inv(sig, 0, 1)).toFixed(3) 0.025 = 1.960
+
+    ciopmks_sm_val.addEventListener("input", isValidInputForMethod1);
+    ciopmks_n_val.addEventListener("input", isValidInputForMethod1);
+    ciopmks_psd_val.addEventListener("input", isValidInputForMethod1);
+    ciopmks_ci_val.addEventListener("input", isValidInputForMethod1);
+    ciopmsk_m2_val.addEventListener("input", isValidInputForMethod2);
+    ciopmsk_m2_psd_val.addEventListener("input", isValidInputForMethod2);
+</script>
+
+</html>
