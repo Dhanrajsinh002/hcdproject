@@ -158,9 +158,14 @@ function convertZToRC($z) {
 
     $row = intval($z * 10) / 10;
     $col = abs((intval($z * 100) / 100) - intval((intval($z * 100) / 100) * 10) / 10);
+    if ($z < 0 && $row == 0) {
+        $row = '-0.0';
+    } else {
+        $row = '0.0';
+    }
 
     // $sel = "SELECT `$col` FROM z_table WHERE `z` = $row";
-    $sel = "SELECT * FROM z_table WHERE `z` = $row";
+    $sel = "SELECT * FROM z_table WHERE `z` = '$row'";
     // echo $sel."\n";
     // exit(0);
     $res = $conn->query($sel);

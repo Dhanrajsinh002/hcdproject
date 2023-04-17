@@ -12,6 +12,8 @@
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="./js/critical_value_approach_ht.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -103,9 +105,9 @@
                                 <tr style="width: 50%;">
                                     <td style="text-align: center;">
                                         <select class="form-select-sm fs-3" oninput="toggleInput()" name="conditions" id="conditions">
-                                            <option value="both_tail">H1 &#8800; &#xb5;</option>
-                                            <option value="left_tail">H1 &#8826; &#xb5;</option>
-                                            <option value="right_tail">H1 &#8827; &#xb5;</option>
+                                            <option value="two_tailed">H1 &#8800; &#xb5;</option>
+                                            <option value="left_tailed">H1 &#8826; &#xb5;</option>
+                                            <option value="right_tailed">H1 &#8827; &#xb5;</option>
                                         </select>
                                     </td>
                                     
@@ -124,7 +126,7 @@
 
                                 <tr>
                                     <td colspan="2">
-                                        <table id="sdsm_res"
+                                        <table id="cva_res"
                                             class="table table-bordered table-light table-hover table-striped text-center fs-3">
                                         </table>
                                     </td>
@@ -164,9 +166,8 @@
             (cva_sd_val.value).match(/^\d+(\.\d+)?$/) &&
             (cva_ss_val.value).match(/^[0-9]+$/)) {
             // checkPValidity();
+            
             cva_btn.disabled = false;
-            cva_ah_val.value = cva_nh_val.value;
-            cva_pm_val.value = cva_nh_val.value;
         } else if (cva_nh_val.value == "" || cva_sl_val.value == "" || cva_sm_val.value == "" || cva_sd_val.value == "" || cva_ss_val.value == "") {
             cva_btn.disabled = true;
         } else {
@@ -174,11 +175,13 @@
         }
     }
 
-    function calculateCVHT(NH, SL, SM, SD, SS, C) {
-        alert("igfvbs");
+    function setValue() {
+        cva_ah_val.value = cva_nh_val.value;
+        cva_pm_val.value = cva_nh_val.value;
     }
 
     cva_nh_val.addEventListener("input", checkValidity);
+    cva_nh_val.addEventListener("input", setValue);
     cva_pm_val.addEventListener("input", checkValidity);
     cva_sl_val.addEventListener("input", checkValidity);
     cva_sm_val.addEventListener("input", checkValidity);

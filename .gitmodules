@@ -1,0 +1,3 @@
+[submodule "vendor/markogoyski/math-php"]
+	path = vendor/markogoyski/math-php
+	url = https://github.com/Dhanrajsinh002/hcdproject

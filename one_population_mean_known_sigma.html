@@ -6,11 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>One Population Mean When &sigma; is Known</title>
-    <link rel="stylesheet" href="./css/mean_discrete_binomial_variable.css">
+    <link rel="stylesheet" href="./css/one_population_mean_known_sigma.css">
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="./js/sampling_distribution_of_sample_mean_calc.js"></script>
+    <script src="./js/one_population_mean_known_sigma.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -116,18 +118,17 @@
 
                                 <tr style="width: 50%;">
                                     <td style="text-align: center;">
-                                        <select class="form-select-sm fs-3" oninput="toggleInput()" name="conditions"
+                                        <select class="form-select-sm fs-3" name="conditions"
                                             id="conditions">
-                                            <option value="both_tail">H1 &#8800; &#xb5;</option>
-                                            <option value="left_tail">H1 &#8826; &#xb5;</option>
-                                            <option value="right_tail">H1 &#8827; &#xb5;</option>
+                                            <option value="two_tailed">H1 &#8800; &#xb5;</option>
+                                            <option value="left_tailed">H1 &#8826; &#xb5;</option>
+                                            <option value="right_tailed">H1 &#8827; &#xb5;</option>
                                         </select>
                                     </td>
 
                                     <td style="text-align: center;">
-                                        <button id="opmks_btn" class="btn btn-primary m-lg-3 fs-4" onclick="calculateSDSM(
+                                        <button id="opmks_btn" class="btn btn-primary m-lg-3 fs-4" onclick="calculateOPMKS(
                                                 document.getElementById('opmks_nh_val').value, 
-                                                // document.getElementById('opmks_pm_val').value, 
                                                 document.getElementById('opmks_sl_val').value, 
                                                 document.getElementById('opmks_sm_val').value, 
                                                 document.getElementById('opmks_sd_val').value, 
@@ -138,7 +139,7 @@
 
                                 <tr>
                                     <td colspan="2">
-                                        <table id="sdsm_res"
+                                        <table id="opmsk_res"
                                             class="table table-bordered table-light table-hover table-striped text-center fs-3">
                                         </table>
                                     </td>
@@ -186,7 +187,13 @@
         }
     }
 
+    function setValue() {
+        opmks_ah_val.value = opmks_nh_val.value;
+        opmks_pm_val.value = opmks_nh_val.value;
+    }
+
     opmks_nh_val.addEventListener("input", checkValidity);
+    opmks_nh_val.addEventListener("input", setValue);
     opmks_pm_val.addEventListener("input", checkValidity);
     opmks_sl_val.addEventListener("input", checkValidity);
     opmks_sm_val.addEventListener("input", checkValidity);

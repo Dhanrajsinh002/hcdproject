@@ -6,11 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>One Population Mean When &sigma; is Unknown</title>
-    <link rel="stylesheet" href="./css/mean_discrete_binomial_variable.css">
+    <link rel="stylesheet" href="./css/one_population_mean_unknown_sigma.css">
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="./js/sampling_distribution_of_sample_mean_calc.js"></script>
+    <script src="./js/one_population_mean_unknown_sigma.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -96,12 +98,12 @@
 
                                 <tr style="width: 50%;">
                                     <td style="width: 50%;">
-                                        <label class="fs-4" for="opmus_sd_val">Determine ()
+                                        <label class="fs-4" for="opmus_ssd_val">Determine Sample <br> Standard Deviation
                                             <i><b>s</b></i> :-</label>
                                     </td>
                                     <td style="width: 50%;">
-                                        <input class="form-control fs-3 m-3" type="text" id="opmus_sd_val"
-                                            name="opmus_sd_val" required>
+                                        <input class="form-control fs-3 m-3" type="text" id="opmus_ssd_val"
+                                            name="opmus_ssd_val" required>
                                     </td>
                                 </tr>
 
@@ -118,21 +120,19 @@
 
                                 <tr style="width: 50%;">
                                     <td style="text-align: center;">
-                                        <select class="form-select-sm fs-3" oninput="toggleInput()" name="conditions"
-                                            id="conditions">
-                                            <option value="both_tail">H1 &#8800; &#xb5;</option>
-                                            <option value="left_tail">H1 &#8826; &#xb5;</option>
-                                            <option value="right_tail">H1 &#8827; &#xb5;</option>
+                                        <select class="form-select-sm fs-3" name="conditions" id="conditions">
+                                            <option value="two_tailed">H1 &#8800; &#xb5;</option>
+                                            <option value="left_tailed">H1 &#8826; &#xb5;</option>
+                                            <option value="right_tailed">H1 &#8827; &#xb5;</option>
                                         </select>
                                     </td>
 
                                     <td style="text-align: center;">
-                                        <button id="opmus_btn" class="btn btn-primary m-lg-3 fs-4" onclick="calculateSDSM(
+                                        <button id="opmus_btn" class="btn btn-primary m-lg-3 fs-4" onclick="calculateOPMUS(
                                                 document.getElementById('opmus_nh_val').value, 
-                                                // document.getElementById('opmus_pm_val').value, 
                                                 document.getElementById('opmus_sl_val').value, 
                                                 document.getElementById('opmus_sm_val').value, 
-                                                document.getElementById('opmus_sd_val').value, 
+                                                document.getElementById('opmus_ssd_val').value, 
                                                 document.getElementById('opmus_ss_val').value, 
                                                 document.getElementById('conditions').value)">Calculate</button>
                                     </td>
@@ -140,7 +140,7 @@
 
                                 <tr>
                                     <td colspan="2">
-                                        <table id="sdsm_res"
+                                        <table id="opmus_res"
                                             class="table table-bordered table-light table-hover table-striped text-center fs-3">
                                         </table>
                                     </td>
@@ -163,12 +163,12 @@
     const opmus_pm_val = document.getElementById("opmus_pm_val");
     const opmus_sl_val = document.getElementById("opmus_sl_val");
     const opmus_sm_val = document.getElementById("opmus_sm_val");
-    const opmus_sd_val = document.getElementById("opmus_sd_val");
+    const opmus_ssd_val = document.getElementById("opmus_ssd_val");
     const opmus_ss_val = document.getElementById("opmus_ss_val");
     const conditions = document.getElementById("conditions");
     const opmus_btn = document.getElementById("opmus_btn");
 
-    if (opmus_nh_val.value == "" || opmus_sl_val.value == "" || opmus_sm_val.value == "" || opmus_sd_val.value == "" || opmus_ss_val.value == "") {
+    if (opmus_nh_val.value == "" || opmus_sl_val.value == "" || opmus_sm_val.value == "" || opmus_ssd_val.value == "" || opmus_ss_val.value == "") {
         opmus_btn.disabled = true;
     }
 
@@ -177,22 +177,28 @@
         if ((opmus_nh_val.value).match(/^\d+(\.\d+)?$/) &&
             (opmus_sl_val.value).match(/^[0-9]+$/) &&
             (opmus_sm_val.value).match(/^\d+(\.\d+)?$/) &&
-            (opmus_sd_val.value).match(/^\d+(\.\d+)?$/) &&
+            (opmus_ssd_val.value).match(/^\d+(\.\d+)?$/) &&
             (opmus_ss_val.value).match(/^[0-9]+$/)) {
             // checkPValidity();
             opmus_btn.disabled = false;
-        } else if (opmus_nh_val.value == "" || opmus_sl_val.value == "" || opmus_sm_val.value == "" || opmus_sd_val.value == "" || opmus_ss_val.value == "") {
+        } else if (opmus_nh_val.value == "" || opmus_sl_val.value == "" || opmus_sm_val.value == "" || opmus_ssd_val.value == "" || opmus_ss_val.value == "") {
             opmus_btn.disabled = true;
         } else {
             opmus_btn.disabled = true;
         }
     }
 
+    function setValue() {
+        opmus_ah_val.value = opmus_nh_val.value;
+        opmus_pm_val.value = opmus_nh_val.value;
+    }
+
     opmus_nh_val.addEventListener("input", checkValidity);
+    opmus_nh_val.addEventListener("input", setValue);
     opmus_pm_val.addEventListener("input", checkValidity);
     opmus_sl_val.addEventListener("input", checkValidity);
     opmus_sm_val.addEventListener("input", checkValidity);
-    opmus_sd_val.addEventListener("input", checkValidity);
+    opmus_ssd_val.addEventListener("input", checkValidity);
     opmus_ss_val.addEventListener("input", checkValidity);
 </script>
 
