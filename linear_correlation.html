@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Correlation</title>
+    <link rel="stylesheet" href="./css/linear_correlation.css">
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./js/linear_correlation.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+
+<body class="bg-dark">
+
+    <div class="well bg-transparent border-0 text-center">
+
+        <table style="width: 100%; text-align: center;">
+            <tr>
+                <th>
+                    <div class="well bg-primary bg-opacity-50 border border-3 rounded-pill border-primary fs-1">
+                        Linear Correlation</div>
+                </th>
+            </tr>
+
+            <tr>
+                <td>
+
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="well row mx-md-3 w-50">
+                            <table style="margin: 0 auto; text-align: center; display: table;">
+                                <tr>
+                                    <td>
+                                        <div class="d-inline-block p-3">
+                                            <label class="fs-4" for="lc_x_val">Enter <i><b>x</b></i> values:- </label>
+                                            <textarea style="resize: none;" class="form-control fs-3" name="lc_x_val"
+                                                id="lc_x_val" cols="30" rows="5"
+                                                placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,9,3,7,0,1,5"
+                                                required></textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-inline-block p-3">
+                                            <label class="fs-4" for="lc_y_val">Enter <i><b>y</b></i> values:- </label>
+                                            <textarea style="resize: none;" class="form-control fs-3" name="lc_y_val"
+                                                id="lc_y_val" cols="30" rows="5"
+                                                placeholder="Enter your values here separated by comma (,)&#10;i.e. - 5,0.9,-3,7,-4,1,5"
+                                                required></textarea>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="lc_btn" class="btn btn-primary m-lg-3 fs-4"
+                                            onclick="calculateLC(document.getElementById('lc_x_val').value,document.getElementById('lc_y_val').value)">Calculate</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <table id="lc_result"
+                        class="table table-bordered table-light table-hover table-striped text-center fs-3"></table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div id="comboPlot" class="w-100"></div>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+</body>
+
+<script>
+    const lc_x_val = document.getElementById("lc_x_val");
+    const lc_y_val = document.getElementById("lc_y_val");
+    const lc_btn = document.getElementById("lc_btn");
+
+    if (lc_x_val.value == "" || lc_y_val.value == "") {
+        lc_btn.disabled = true;
+    }
+
+    function checkREValidity() {
+        if ((lc_x_val.value).match(/^(?!.*,,)(?!.*,$)(?!^,)\d+(?:\.\d+)?(?:,\d+(?:\.\d+)?)*$/) &&
+            (lc_y_val.value).match(/^(?!.*,,)(?!.*,$)(?!^,)[+-]?\d+(?:\.\d+)?(?:,\s*[+-]?\d+(?:\.\d+)?)*$/)) {
+            lc_btn.disabled = false;
+            checkEqualLength();
+        } else if (lc_x_val.value == "" || lc_y_val.value == "") {
+            lc_btn.disabled = true;
+        } else {
+            lc_btn.disabled = true;
+        }
+    }
+
+    function checkEqualLength() {
+        if (((lc_x_val.value).split(",")).length === ((lc_y_val.value).split(",")).length) {
+            lc_btn.disabled = false;
+        } else {
+            lc_btn.disabled = true;
+        }
+    }
+
+    lc_x_val.addEventListener("input", checkREValidity);
+    lc_y_val.addEventListener("input", checkREValidity);
+</script>
+
+</html>

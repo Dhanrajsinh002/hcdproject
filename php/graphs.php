@@ -59,11 +59,6 @@ function findResultOfMethod1($arr)
         array_push($m1label, $i);
     }
 
-    // print_r($m1freqs);
-    // print_r($m1label);
-    // exit(0);
-    // return $rel_arr;
-
     // for finding relative frequencies
 
     $m1rel_freqs = array();
@@ -74,7 +69,7 @@ function findResultOfMethod1($arr)
     }
 
     for ($i = 0; $i < count($m1rel_freqs); $i++) {
-        array_push($datapoints, array("y" => $m1rel_freqs[$i], "x" => (string)$m1label[$i]));
+        array_push($datapoints, array("y" => $m1rel_freqs[$i], "label" => (string)$m1label[$i]));
     }
 
     // for Dotplot array
@@ -84,8 +79,6 @@ function findResultOfMethod1($arr)
             array_push($dotPlotDataPoints, (object) array("y" => $i, "x" => ord($key)));
         }
     }
-
-    // returning for frequency and relative frequency tables
 
     // print_r($rel_arr);
     // print_r($m1rel_freqs);
@@ -112,7 +105,7 @@ function findResultOfMethod1($arr)
 
     echo plotBarGraph($datapoints);
     echo plotPieGraph($datapoints);
-    echo plotDotGraph($dotPlotDataPoints);
+    // echo plotDotGraph($dotPlotDataPoints);
     // exit(0);
 }
 
@@ -133,7 +126,7 @@ function findResultOfMethod2($lbl, $val)
     }
 
     for ($i = 0; $i < count($m2rel_freqs); $i++) {
-        array_push($datapoints, array("y" => $m2rel_freqs[$i], "x" => (string)$lbl[$i]));
+        array_push($datapoints, array("y" => $m2rel_freqs[$i], "label" => (string)$lbl[$i]));
     }
 
     echo "<thead class='thead-dark'>
@@ -230,8 +223,7 @@ function plotDotGraph($datapoints)
                 text: "Dot Plot"
             },
             axisX: {
-                title: "Sample Mean",
-                interval: 1
+                title: "Labels",
             },
             axisY: {
                 title: "Frequency",

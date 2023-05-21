@@ -2,12 +2,8 @@
 
 session_start();
 
-$bd_n = 0;
-$bd_p = 0;
-$bd_x = 0;
-$mean = 0;
-$sd = 0;
-$bd_o = "";
+$mainDataPoints = array();
+$subDataPoints = array();
 
 if( (isset($_POST["bd_n"])) && ($_POST["bd_p"]) && (isset($_POST["bd_x"])) && (isset($_POST["bd_o"]))) {
     
@@ -16,71 +12,91 @@ if( (isset($_POST["bd_n"])) && ($_POST["bd_p"]) && (isset($_POST["bd_x"])) && (i
     $bd_x = $_POST["bd_x"];
     $bd_o = $_POST["bd_o"];
 
-    if( ($_POST["bd_n"] - $_POST["bd_x"]) > $_POST["bd_x"]) {
-
-        // echo ($_POST["bd_n"]."-". $_POST["bd_n"] - $_POST["bd_x"]);
-        binomialCoef($_POST["bd_n"], $_POST["bd_n"] - $_POST["bd_x"], 1);
-    
-    } else if (($_POST["bd_n"] - $_POST["bd_x"]) == $_POST["bd_x"]) {
-    
-        // echo ($_POST["bd_n"]." ". $_POST["bd_x"]);
-        binomialCoef($_POST["bd_n"], $_POST["bd_x"], 2);
-        
-    } else {
-        
-        // echo ($_POST["bd_n"]." ". $_POST["bd_x"]);
-        binomialCoef($_POST["bd_n"], $_POST["bd_x"], 2);
-        // echo $_POST["bd_x"];
+    for($i = 0; $i <= $bd_n; $i++) {
+        array_push($mainDataPoints, array( "X" => $i, "Y" => binomial_pmf($bd_n, $bd_p, $i)) );
     }
-}
-
-function binomialCoef($nume, $val, $flag) {
-    global $bd_n, $bd_x, $bd_p, $mean, $sd;
-    
-    $nume_facto = 1;
-    $deno_facto = 1;
-    $deno_init = 0;
-    
-    for($i = $val+1; $i <= $nume; $i++) {
-        $nume_facto *= $i;
-    }
-
-    // echo $nume_facto;
-
-    if($flag == 1) {
-        $deno_init = $bd_x;
-    } else {
-        $deno_init = $bd_n - $bd_x;
-    }
-
-    // echo $deno_init;
-
-    for($i = $deno_init; $i > 0; $i--) {
-        $deno_facto *= $i;
-    }
-
-    // find mean
-    $mean = $bd_n * $bd_p;
-
-    // find stadard deviation
-    $sd = sqrt( $bd_n * ($bd_p * (1 - $bd_p)) );
-
-    binomialProbability($nume_facto / $deno_facto);
-}
-
-function binomialProbability($n_x) {
-
-    global $bd_n, $bd_p, $bd_x, $bd_o;
 
     if($bd_o == "equal") {
+        binomial_pmf($bd_n, $bd_p, $bd_x);
+    } else if($bd_o == "less_equal") { // atleast
+        binomial_at_most($bd_n, $bd_p, $bd_x);
         echo "  <thead class='thead-dark'>
-                    <tr scope='col text-center'>
-                        <td class='text-center'>P(X = x) =</td>
-                        <td class='text-center'>".$n_x * pow($bd_p, $bd_x) * pow( (1 - $bd_p), $bd_n - $bd_x)."</td>
+                    <tr>
+                        <th>Result</th>
                     </tr>
-                </thead> ";
-    } else if ($bd_o == "less_equal") {
-
-    } else {}
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>";
+    } else { // atmost
+        binomial_at_least($bd_n, $bd_p, $bd_x);
+        echo "  <thead class='thead-dark'>
+                    <tr>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>";
+    }
 }
+
+// Define the function to calculate the binomial coefficient
+function binomialCoef($n, $k) {
+
+  if ($k == 0 || $k == $n) {
+    return 1;
+  } else {
+    $numerator = 1;
+    for ($i = $n; $i >= $n - $k + 1; $i--) {
+      $numerator *= $i;
+    }
+    $denominator = 1;
+    for ($j = $k; $j >= 1; $j--) {
+      $denominator *= $j;
+    }
+    return $numerator / $denominator;
+  }
+}
+
+// Define the function to calculate the PMF of the binomial distribution
+function binomial_pmf($n, $p, $k)
+{
+    $q = 1 - $p;
+    $coefficient = binomialCoef($n, $k);
+    $probability = pow($p, $k) * pow($q, $n - $k);
+    return $coefficient * $probability;
+}
+
+// Define the function to calculate the probability of getting at least k successes
+function binomial_at_least($n, $p, $k)
+{
+    // $probability = 0;
+    $probability = array();
+    for ($i = $k; $i <= $n; $i++) {
+        // $probability += binomial_pmf($n, $p, $i);
+        array_push($subDataPoints, array("X" => $i, "Y" => binomial_pmf($n, $p, $i)) );
+        array_push($probability, binomial_pmf($n, $p, $i));
+    }
+    return $probability;
+}
+
+// Define the function to calculate the probability of getting at most k successes
+function binomial_at_most($n, $p, $k)
+{
+    // $probability = 0;
+    $probability = array();
+    for ($i = 0; $i <= $k; $i++) {
+        // $probability += binomial_pmf($n, $p, $i);
+        array_push($subDataPoints, array("X" => $i, "Y" => binomial_pmf($n, $p, $i)) );
+        array_push($probability, binomial_pmf($n, $p, $i));
+    }
+    return $probability;
+}
+
+
 ?>

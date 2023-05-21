@@ -6,7 +6,7 @@ require '.\db_config.php';
 require '..\vendor\autoload.php';
 
 use MathPHP\Probability\Distribution\Continuous\StudentT;
-use MathPHP\Statistics\Distribution\TDistribution;
+use MathPHP\Probability\Distribution\Table;
 
 // if(isset($_POST['nh']) && isset($_POST['sl']) && isset($_POST['sm']) && isset($_POST['ssd']) && isset($_POST['ss']) && isset($_POST['c']) && isset($_POST['cv'])) {
 if(isset($_POST['nh']) && isset($_POST['sl']) && isset($_POST['sm']) && isset($_POST['ssd']) && isset($_POST['ss']) && isset($_POST['c'])) {
@@ -65,18 +65,25 @@ if(isset($_POST['nh']) && isset($_POST['sl']) && isset($_POST['sm']) && isset($_
     //     }
     // }
 
-    $t = round(($_POST['sm'] - $_POST['nh']) / ($_POST['ssd'] / sqrt($_POST['ss'])), 3);
+    
     $opmus_cv_conditions = $_POST['c'];
-    $alpha = $_POST['sl'];
+    $alpha = $_POST['sl']/100;
     $opmus_cv_compare_prefix = "";
     $opmus_cv_decision = "";
     $opmus_cv_region = "";
-    $opmus_cv = 0;
+
+    $t = round(($_POST['sm'] - $_POST['nh']) / ($_POST['ssd'] / sqrt($_POST['ss'])), 3);
+
+    $tDistInv = new StudentT($_POST['ss']-1);
+    $inv = number_format((float)$tDistInv->inverse(1 - $alpha), 3);
+    // echo $t."\n";
+    // echo number_format((float)$inv, 3);
+    // exit(0);
 
     if ($opmus_cv_conditions == "two_tailed") {
-        $opmus_cv = 2 * findPV($_POST['ss'] - 1, $alpha);
+        // $inv = 2 * findPV($_POST['ss'] - 1, $alpha);
 
-        if ($t <= -($opmus_cv) || $t >= $opmus_cv) {
+        if ($t <= -($inv) || $t >= $inv) {
             $opmus_cv_compare_prefix = "less or equal to";
             $opmus_cv_decision = "rejected";
             $opmus_cv_region = "rejection";
@@ -86,9 +93,9 @@ if(isset($_POST['nh']) && isset($_POST['sl']) && isset($_POST['sm']) && isset($_
             $opmus_cv_region = "acceptance";
         }
     } else if ($opmus_cv_conditions == "left_tailed") {
-        $opmus_cv = findPV($_POST['ss'] - 1, $alpha);
+        // $inv = findPV($_POST['ss'] - 1, $alpha);
 
-        if ($t <= -($opmus_cv)
+        if ($t <= -($inv)
         ) {
             $opmus_cv_compare_prefix = "less than";
             $opmus_cv_decision = "rejected";
@@ -99,9 +106,9 @@ if(isset($_POST['nh']) && isset($_POST['sl']) && isset($_POST['sm']) && isset($_
             $opmus_cv_region = "acceptance";
         }
     } else if ($opmus_cv_conditions == "right_tailed") {
-        $opmus_cv = 1 - findPV($_POST['ss'] - 1, $alpha);
+        // $inv = 1 - findPV($_POST['ss'] - 1, $alpha);
 
-        if ($t >= ($opmus_cv)) {
+        if ($t >= ($inv)) {
             $opmus_cv_compare_prefix = "more than";
             $opmus_cv_decision = "rejected";
             $opmus_cv_region = "rejection";
@@ -116,7 +123,13 @@ if(isset($_POST['nh']) && isset($_POST['sl']) && isset($_POST['sm']) && isset($_
 
     $tDist = new StudentT($_POST['ss'] - 1);
     $cdf = $tDist->cdf($t);
-    $p = round(abs($cdf), 5);
+    $p = 0;
+
+    if($opmus_cv_conditions == "right_tailed") {
+        $p = 1 - round(abs($cdf), 5);
+    } else if ($opmus_cv_conditions == "left_tailed") {
+        $p = round(abs($cdf), 5);
+    }
     
     $opmus_pv_decision = "";
     $opmus_pv_sign_prefix = "";
@@ -146,7 +159,7 @@ if(isset($_POST['nh']) && isset($_POST['sl']) && isset($_POST['sm']) && isset($_
                     <td>The value of the test statistic is <b><i>t</i></b> = " . $t . "</td>
                 </tr>
                 <tr>
-                    <td>Here The value of the test statistic is " . $opmus_cv_compare_prefix . " The Critical Value " . $opmus_cv . " limits and appears in " . $opmus_cv_region . "</td>
+                    <td>Here The value of the test statistic is " . $opmus_cv_compare_prefix . " The Critical Value " . $inv . " limits and appears in " . $opmus_cv_region . "</td>
                     <td>Here The <b><i>P</i></b> Value is " . $p . " which is " . $opmus_pv_compare_prefix . " &alpha; limits and appears in " . $opmus_pv_region . "</td>
                 </tr>
                 <tr>

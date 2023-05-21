@@ -95,8 +95,10 @@ if (isset($_POST['x']) && isset($_POST['y'])) {
             </tbody>";
 }
 
-if( isset($_POST['b0']) && isset($_POST['sign']) && isset($_POST['b1']) && isset($_POST['x1']) && isset($_POST['x2'])) {
-    echo $_POST['b0']." || ". $_POST['sign']." || ". $_POST['b1']." || ". $_POST['x1']." || ". $_POST['x2'];        
+else if( isset($_POST['b0']) && isset($_POST['sign']) && 
+        isset($_POST['b1']) && isset($_POST['x1']) && isset($_POST['x2']) ) {
+    return "Function 2 Called";
+    // echo $_POST['b0']." || ". $_POST['sign']." || ". $_POST['b1']." || ". $_POST['x1']." || ". $_POST['x2'];        
 }
 
 // if (isset($_POST['x1']) && isset($_POST['x2'])) {
@@ -187,9 +189,6 @@ function plotScatter($data, $predt_data)
                 title: "Y",
                 suffix: ""
             },
-            // toolTip: {
-            //     shared: true
-            // },
             data: [{
                     type: "scatter",
                     markerType: "circle",
@@ -208,26 +207,5 @@ function plotScatter($data, $predt_data)
     </script>
 <?php
 }
-
-// function plotLine($data)
-// {
-// ?>
-     <!-- <script>
-//         var chart = new CanvasJS.Chart("comboPlot", {
-//             title: {
-//                 text: "Push-ups Over a Week"
-//             },
-//             axisY: {
-//                 title: "Number of Push-ups"
-//             },
-//             data: [{
-//                 type: "line",
-                // dataPoints: <?php //echo json_encode($data, JSON_NUMERIC_CHECK); ?>
-//             }]
-//         });
-//         chart.render();
-//     </script> -->
- <?php
-// }
 
 ?>

@@ -5,6 +5,7 @@ function calculateBinomialProbability(N,P,X,O) {
         data: {bd_n : N, bd_p : P, bd_x : X, bd_o : O}
     }).done(function (response) {
         // alert(response);
-        $("#bd_result").html(response);
+        // $("#bd_result").html(response);
+        console.log(response);
     })
 }

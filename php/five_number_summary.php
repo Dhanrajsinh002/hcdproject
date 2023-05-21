@@ -14,8 +14,9 @@ if(isset($_POST["fns_val"])) {
     $arr = explode(",",$_POST["fns_val"]);
     sort($arr);
 
-    $Q2 = findMedian($arr);
-    $quartiles = findQuartiles($arr);
+    $Q1 = findQ1($arr);
+    $Q2 = findQ2($arr);
+    $Q3 = findQ3($arr);
     $IQR = $Q3 - $Q1;
     $min_len = $Q1 - 1.5 * $IQR;    
     $max_len = $Q3 + 1.5 * $IQR;
@@ -53,50 +54,46 @@ if(isset($_POST["fns_val"])) {
                 </tr>
             </tbody>";
 
-    array_push($datapoints, array("x" => "Boxplot", "y" => array( min($arr), $Q1, $Q2, $Q3, max($arr) )));
+    array_push($datapoints, array("label" => "Boxplot", "y" => array( min($arr), $Q1, $Q3, max($arr), $Q2 )));
 
     return boxPlots($datapoints);
 }
 
-function findMedian($arr) {
-    $len = count($arr);
-    if($len % 2 == 0) {
-        return (($arr[ (int) ((count($arr) - 1) / 2) ] + $arr[ (int) (count($arr) / 2) ] ) / 2);
+function findQ1($arr) {
+    // Find the first quartile (Q1)
+    $count = count($arr);
+    $middle = floor(($count - 1) / 2);
+    $lower_half = array_slice($arr, 0, $middle + 1);
+    $count_lower_half = count($lower_half);
+    $middle_lower_half = floor(($count_lower_half - 1) / 2);
+    if ($count_lower_half % 2 == 0) {
+        return ($lower_half[$middle_lower_half] + $lower_half[$middle_lower_half + 1]) / 2;
     } else {
-        return ($arr[ (int) ($len / 2) ]);
+        return $lower_half[$middle_lower_half];
     }
 }
 
-function findQuartiles($arr) {
-    global $Q1,$Q3;
-
-    $bot_arr = array(); // Q1
-    $top_arr = array(); // Q3
-    $last_iter = 0;
-
-    if(count($arr) %2 != 0) {
-        $last_iter -= 1;
+function findQ2($arr) {
+    $count = count($arr);
+    $middle = floor(($count - 1) / 2);
+    if ($count % 2 == 0) {
+        return ($arr[$middle] + $arr[$middle + 1]) / 2;
+    } else {
+        return $arr[$middle];
     }
+}
 
-    // for bottom median array Q1
-    for($i = 0; $i < count($arr)/2; $i++) {
-        array_push($bot_arr, $arr[$i]);
-        $last_iter++;
+function findQ3($arr) {
+    $count = count($arr);
+    $middle = floor(($count - 1) / 2);
+    $upper_half = array_slice($arr, $middle + 1);
+    $count_upper_half = count($upper_half);
+    $middle_upper_half = floor(($count_upper_half - 1) / 2);
+    if ($count_upper_half % 2 == 0) {
+        return ($upper_half[$middle_upper_half] + $upper_half[$middle_upper_half + 1]) / 2;
+    } else {
+        return $upper_half[$middle_upper_half];
     }
-    // echo "Bot arr-".print_r($bot_arr);
-    $Q1 = findMedian($bot_arr);
-    
-    // print_r($bot_arr);
-    
-    // for top median array Q3
-    for($i = $last_iter; $i < count($arr); $i++) {
-        array_push($top_arr, $arr[$i]);
-    }
-    
-    // echo "top arr-".print_r($top_arr);
-    $Q3 = findMedian($top_arr);
-
-    // print_r($top_arr);
 }
 
 function findOutliers($arr) {
@@ -134,14 +131,15 @@ function boxPlots($datapoints) {
         		fontColor: "#3C4D2D"
         	},
         	axisY: {
-        		title: "Y"
+        		title: "Y",
+                interval: 5
         	},
         	data: [{
         		type: "boxAndWhisker",
         		color: "#3C4D2D",
         		upperBoxColor: "#AEF35A",
         		lowerBoxColor: "#B8B2FB",
-        		yValueFormatString: "#,##0",
+        		yValueFormatString: "#.#####",
         		dataPoints: <?php echo json_encode($datapoints, JSON_NUMERIC_CHECK); ?>
         	}]
         });

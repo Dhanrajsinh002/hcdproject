@@ -110,28 +110,6 @@
     }
 
     function furtherProcess() {
-        // const eq1_val = document.getElementById('eq1');
-        // const eq2_val = document.getElementById('eq2');
-        // const eq_btn = document.getElementById('eq_btn');
-
-        // if(eq1_val.value == '' || eq2_val.value == '') {
-        //     eq_btn.disabled = true;
-        // }
-
-        // function checkValid() {
-        //     if((eq1_val.value).match(/^[0-9]+$/) && (eq2_val.value).match(/^[0-9]+$/)) {
-        //         eq_btn.disabled = false;
-        //     } else if (eq1_val.value == '' || eq2_val.value == '') {
-        //         eq_btn.disabled = true;
-        //     } else {
-        //         eq_btn.disabled = true;
-        //     }
-        // }
-
-        // eq1_val.addEventListener('input',checkValid);
-        // eq2_val.addEventListener('input',checkValid);
-
-
         const eq1_sign = document.getElementById('eq1_sign');
         const eq1_b0 = document.getElementById('eq1_b0');
         const eq1_b1 = document.getElementById('eq1_b1');
@@ -144,44 +122,43 @@
 
         if(eq1_sign.value == "" || eq1_b0.value == "" || eq1_b1.value == "" || eq1_x.value == "" || eq2_x.value == "") {
             eq_btn.disabled = true;
-            console.log("IF CALLED");
+        }
+
+        function setValues() {
+            eq2_b0.value = eq1_b0.value;
+            eq2_b1.value = eq1_b1.value;
+            eq2_sign.value = eq1_sign.value;
+
+            checkValid();
         }
         
         function checkValid() {
+            // if(/*(eq1_sign.value).match(/^[+-]$/) &&*/ (eq1_b0.value).match(/^-?\d+(\.\d+)?$/) && (eq1_b1.value).match(/^[0-9]+$/)
+            //     && (eq1_x.value).match(/^-?\d+(\.\d+)?$/) && (eq2_x.value).match(/^-?\d+(\.\d+)?$/) ) {
             if( ((/^[+-]$/).test(eq1_sign.value)) || ((/^-?\d*\.?\d+$/).test(eq1_b0.value)) || ((/^[0-9]+$/).test(eq1_b1.value)) 
                 || ((/^-?\d*\.?\d+$/).test(eq1_x.value)) || ((/^-?\d*\.?\d+$/).test(eq2_x.value)) ) {
                 
                     eq2_b0.value = eq1_b0.value;
                     eq2_b1.value = eq1_b1.value;
                     eq2_sign.value = eq1_sign.value;
-                
                     eq_btn.disabled = false;
 
-                    // console.log("VALID IF");
                 } else if(eq1_sign.value == "" || eq1_b0.value == "" || eq1_b1.value == "" || eq1_x.value == "" || eq2_x.value == "") {
+                    // setValues();
                     eq_btn.disabled = true;
-                    // console.log("VALID ELSE IF");
                 } else {
                     eq_btn.disabled = true;
-                    // console.log("VALID ELSE");
+                }
             }
-        }
 
-        eq1_b0.addEventListener("input",checkValid);
-        eq1_b1.addEventListener("input",checkValid);
-        eq1_x.addEventListener("input",checkValid);
-        eq1_sign.addEventListener("input",checkValid);
-    }
-    
-    // function checkXValidity() {
-    //     if((re_y_val.value).match(/^[+-]?(\d+(\.\d+)?|\.\d+)$/)) {
-    //         re_btn.disabled = false;
-    //     } else if(re_y_val.value == "") {
-    //         re_btn.disabled = true;
-    //     } else {
-    //         re_btn.disabled = true;
-    //     }
-    // }
+            eq1_b0.addEventListener("input",checkValid);
+            eq1_b1.addEventListener("input",checkValid);
+            eq1_sign.addEventListener("input",checkValid);
+            // eq1_b0.addEventListener("input",setValues);
+            // eq1_b1.addEventListener("input",setValues);
+            // eq1_sign.addEventListener("input",setValues);
+            eq1_x.addEventListener("input",checkValid);
+        }
 
     re_x_val.addEventListener("input",checkREValidity);
     re_y_val.addEventListener("input",checkREValidity);
